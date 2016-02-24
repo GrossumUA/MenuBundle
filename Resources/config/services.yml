@@ -1,0 +1,4 @@
+services:
+#    grossum_menu.example:
+#        class: Grossum\MenuBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
