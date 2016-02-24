@@ -1,0 +1,2 @@
+parameters:
+    grossum_menu.menu.admin.class: Grossum\MenuBundle\Admin\MenuAdmin

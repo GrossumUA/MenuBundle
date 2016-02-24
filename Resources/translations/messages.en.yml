@@ -1,0 +1,6 @@
+grossum_menu:
+    admin:
+        menu:
+            label: 'Menu'
+            plural_label: 'Menus'
+            name: 'Name'
