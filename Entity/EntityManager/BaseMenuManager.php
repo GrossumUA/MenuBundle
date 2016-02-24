@@ -5,7 +5,7 @@ namespace Grossum\MenuBundle\Entity\EntityManager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Grossum\CoreBundle\Entity\EntityTrait\SaveUpdateInManagerTrait;
 
-class MenuManager
+class BaseMenuManager
 {
     use SaveUpdateInManagerTrait;
 
