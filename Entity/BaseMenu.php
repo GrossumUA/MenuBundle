@@ -99,4 +99,3 @@ class BaseMenu
         return $this->getName() ?: 'New Menu';
     }
 }
-
