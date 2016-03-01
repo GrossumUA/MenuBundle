@@ -1,8 +1,8 @@
-Grossum\MenuBundle\Entity\BaseMenu:
+Grossum\MenuBundle\Entity\BaseMenuItem:
     type: mappedSuperclass
-    table: menu
+    table: menu_item
     fields:
-        name:
+        title:
             type: string
             length: 255
         createdAt:
@@ -17,11 +17,14 @@ Grossum\MenuBundle\Entity\BaseMenu:
             gedmo:
                 timestampable:
                     on: update
-    oneToMany:
-        items:
-            targetEntity: BaseMenuItem
-            mappedBy: menu
+        url:
+            type: text
+        entity_class:
+            type: string
+
+    manyToOne:
+        menu:
+            targetEntity: BaseMenu
+            inversedBy: BaseMenuItem
             cascade:
                 - persist
-                - remove
-            orphanRemoval : true

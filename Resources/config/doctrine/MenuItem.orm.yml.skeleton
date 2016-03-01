@@ -1,0 +1,11 @@
+Application\Grossum\MenuBundle\Entity\MenuItem:
+    type: entity
+    table: menu_item
+    repositoryClass: Application\Grossum\MenuBundle\Entity\Repository\MenuItemRepository
+    id:
+        id:
+            type: integer
+            unsigned: true
+            id: true
+            generator:
+                strategy: AUTO

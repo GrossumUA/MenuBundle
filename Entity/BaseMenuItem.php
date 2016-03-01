@@ -2,10 +2,10 @@
 
 namespace Grossum\MenuBundle\Entity;
 
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
-
-class BaseMenu
+/**
+ * BaseMenuItem
+ */
+class BaseMenuItem
 {
     /**
      * @var string
@@ -23,16 +23,17 @@ class BaseMenu
     protected $updatedAt;
 
     /**
-     * @var Collection
+     * @var BaseMenu
      */
-    private $items;
+    protected $menu;
+
 
     /**
      * Set name
      *
      * @param string $name
      *
-     * @return BaseMenu
+     * @return BaseMenuItem
      */
     public function setName($name)
     {
@@ -56,7 +57,7 @@ class BaseMenu
      *
      * @param \DateTime $createdAt
      *
-     * @return BaseMenu
+     * @return BaseMenuItem
      */
     public function setCreatedAt($createdAt)
     {
@@ -80,7 +81,7 @@ class BaseMenu
      *
      * @param \DateTime $updatedAt
      *
-     * @return BaseMenu
+     * @return BaseMenuItem
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -100,53 +101,26 @@ class BaseMenu
     }
 
     /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->getName() ?: 'New Menu';
-    }
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->items = new ArrayCollection();
-    }
-
-    /**
-     * Add item
+     * Set menu
      *
-     * @param BaseMenuItem $item
+     * @param BaseMenu $menu
      *
-     * @return BaseMenu
+     * @return BaseMenuItem
      */
-    public function addItem(BaseMenuItem $item)
+    public function setMenu(BaseMenu $menu = null)
     {
-        $item->setMenu($this);
-        $this->items[] = $item;
+        $this->menu = $menu;
 
         return $this;
     }
 
     /**
-     * Remove item
+     * Get menu
      *
-     * @param BaseMenuItem $item
+     * @return BaseMenu
      */
-    public function removeItem(BaseMenuItem $item)
+    public function getMenu()
     {
-        $this->items->removeElement($item);
-    }
-
-    /**
-     * Get items
-     *
-     * @return Collection
-     */
-    public function getItems()
-    {
-        return $this->items;
+        return $this->menu;
     }
 }

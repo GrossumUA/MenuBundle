@@ -32,6 +32,7 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('menu')->defaultValue('Application\\Grossum\\MenuBundle\\Entity\\Menu')->end()
+                        ->scalarNode('menu_item')->defaultValue('Application\\Grossum\\MenuBundle\\Entity\\MenuItem')->end()
                     ->end()
                 ->end()
             ->end()
