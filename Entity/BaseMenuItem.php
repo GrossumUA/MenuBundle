@@ -27,7 +27,6 @@ abstract class BaseMenuItem
      */
     protected $menu;
 
-
     /**
      * Set name
      *

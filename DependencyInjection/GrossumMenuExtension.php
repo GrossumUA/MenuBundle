@@ -49,7 +49,7 @@ class GrossumMenuExtension extends Extension
     {
         $collector = DoctrineCollector::getInstance();
         $collector->addAssociation($config['class']['menu_item'], 'mapManyToOne', array(
-            'fieldName'     => 'contact',
+            'fieldName'     => 'menu_item',
             'targetEntity'  => $config['class']['menu'],
             'cascade'       => array(
                 'persist',
@@ -65,7 +65,7 @@ class GrossumMenuExtension extends Extension
             'orphanRemoval' => false,
         ));
         $collector->addAssociation($config['class']['menu'], 'mapOneToMany', array(
-            'fieldName'     => 'items',
+            'fieldName'     => 'menu_items',
             'targetEntity'  => $config['class']['menu_item'],
             'cascade'       => array(
                 'persist',

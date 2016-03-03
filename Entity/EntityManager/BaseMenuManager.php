@@ -28,7 +28,7 @@ class BaseMenuManager
     public function __construct(ObjectManager $objectManager, $menuClass)
     {
         $this->objectManager = $objectManager;
-        $this->repository    = $objectManager->getRepository('GrossumMenuBundle:BaseMenu');
+        $this->repository = $objectManager->getRepository('GrossumMenuBundle:BaseMenu');
         $this->menuClass = $menuClass;
     }
 
