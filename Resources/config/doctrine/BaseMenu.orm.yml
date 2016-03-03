@@ -17,11 +17,3 @@ Grossum\MenuBundle\Entity\BaseMenu:
             gedmo:
                 timestampable:
                     on: update
-    oneToMany:
-        items:
-            targetEntity: BaseMenuItem
-            mappedBy: menu
-            cascade:
-                - persist
-                - remove
-            orphanRemoval : true

@@ -2,15 +2,27 @@
 
 namespace Grossum\MenuBundle\Entity;
 
-/**
- * BaseMenuItem
- */
 abstract class BaseMenuItem
 {
     /**
      * @var string
      */
-    protected $name;
+    protected $title;
+
+    /**
+     * @var string
+     */
+    protected $url;
+
+    /**
+     * @var string
+     */
+    protected $entityClass;
+
+    /**
+     * @var string
+     */
+    protected $entityIdentifier;
 
     /**
      * @var \DateTime
@@ -28,27 +40,99 @@ abstract class BaseMenuItem
     protected $menu;
 
     /**
-     * Set name
+     * Set title
      *
-     * @param string $name
+     * @param string $title
      *
-     * @return BaseMenuItem
+     * @return $this
      */
-    public function setName($name)
+    public function setTitle($title)
     {
-        $this->name = $name;
+        $this->title = $title;
 
         return $this;
     }
 
     /**
-     * Get name
+     * Get title
      *
      * @return string
      */
-    public function getName()
+    public function getTitle()
     {
-        return $this->name;
+        return $this->title;
+    }
+
+    /**
+     * Set url
+     *
+     * @param string $url
+     *
+     * @return $this
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get url
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * Set entityClass
+     *
+     * @param string $entityClass
+     *
+     * @return $this
+     */
+    public function setEntityClass($entityClass)
+    {
+        $this->entityClass = $entityClass;
+
+        return $this;
+    }
+
+    /**
+     * Get entityClass
+     *
+     * @return string
+     */
+    public function getEntityClass()
+    {
+        return $this->entityClass;
+    }
+
+    /**
+     * Set entityIdentifier
+     *
+     * @param string $entityIdentifier
+     *
+     * @return $this
+     */
+    public function setEntityIdentifier($entityIdentifier)
+    {
+        $this->entityIdentifier = $entityIdentifier;
+
+        return $this;
+    }
+
+    /**
+     * Get entityIdentifier
+     *
+     * @return string
+     */
+    public function getEntityIdentifier()
+    {
+        return $this->entityIdentifier;
     }
 
     /**
@@ -56,7 +140,7 @@ abstract class BaseMenuItem
      *
      * @param \DateTime $createdAt
      *
-     * @return BaseMenuItem
+     * @return $this
      */
     public function setCreatedAt($createdAt)
     {
@@ -80,7 +164,7 @@ abstract class BaseMenuItem
      *
      * @param \DateTime $updatedAt
      *
-     * @return BaseMenuItem
+     * @return $this
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -103,10 +187,9 @@ abstract class BaseMenuItem
      * Set menu
      *
      * @param BaseMenu $menu
-     *
-     * @return BaseMenuItem
+     * @return $this
      */
-    public function setMenu(BaseMenu $menu = null)
+    public function setMenu(BaseMenu $menu)
     {
         $this->menu = $menu;
 
@@ -121,5 +204,13 @@ abstract class BaseMenuItem
     public function getMenu()
     {
         return $this->menu;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->title ?: 'Menu Item';
     }
 }

@@ -22,13 +22,18 @@ class BaseMenuManager
      */
     private $repository;
 
-    /** @var  ObjectManager */
+    /**
+     * @var ObjectManager
+     */
     private $objectManager;
 
+    /**
+     * @param ObjectManager $objectManager
+     * @param string $menuClass
+     */
     public function __construct(ObjectManager $objectManager, $menuClass)
     {
         $this->objectManager = $objectManager;
-        $this->repository = $objectManager->getRepository('GrossumMenuBundle:BaseMenu');
         $this->menuClass = $menuClass;
     }
 

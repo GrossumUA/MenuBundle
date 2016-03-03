@@ -25,7 +25,15 @@ abstract class BaseMenu
     /**
      * @var Collection
      */
-    private $items;
+    protected $menuItems;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->menuItems = new ArrayCollection();
+    }
 
     /**
      * Set name
@@ -108,45 +116,37 @@ abstract class BaseMenu
     }
 
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->items = new ArrayCollection();
-    }
-
-    /**
-     * Add item
+     * Add menuItem
      *
-     * @param BaseMenuItem $item
+     * @param BaseMenuItem $menuItem
      *
-     * @return BaseMenu
+     * @return $this
      */
-    public function addItem(BaseMenuItem $item)
+    public function addMenuItem(BaseMenuItem $menuItem)
     {
-        $item->setMenu($this);
-        $this->items[] = $item;
+        $menuItem->setMenu($this);
+        $this->menuItems[] = $menuItem;
 
         return $this;
     }
 
     /**
-     * Remove item
+     * Remove menuItem
      *
-     * @param BaseMenuItem $item
+     * @param BaseMenuItem $menuItem
      */
-    public function removeItem(BaseMenuItem $item)
+    public function removeMenuItem(BaseMenuItem $menuItem)
     {
-        $this->items->removeElement($item);
+        $this->menuItems->removeElement($menuItem);
     }
 
     /**
-     * Get items
+     * Get menuItems
      *
      * @return Collection
      */
-    public function getItems()
+    public function getMenuItems()
     {
-        return $this->items;
+        return $this->menuItems;
     }
 }

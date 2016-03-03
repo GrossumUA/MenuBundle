@@ -30,6 +30,7 @@ class GrossumMenuExtension extends Extension
         }
 
         $this->configureParameterClass($container, $config);
+        $this->registerDoctrineMapping($config);
     }
 
     /**
@@ -49,13 +50,13 @@ class GrossumMenuExtension extends Extension
     {
         $collector = DoctrineCollector::getInstance();
         $collector->addAssociation($config['class']['menu_item'], 'mapManyToOne', array(
-            'fieldName'     => 'menu_item',
+            'fieldName'     => 'menu',
             'targetEntity'  => $config['class']['menu'],
             'cascade'       => array(
                 'persist',
             ),
             'mappedBy'      => null,
-            'inversedBy'    => 'menu_items',
+            'inversedBy'    => 'menuItems',
             'joinColumns'   => array(
                 array(
                     'name'                 => 'menu_id',
@@ -64,14 +65,15 @@ class GrossumMenuExtension extends Extension
             ),
             'orphanRemoval' => false,
         ));
+
         $collector->addAssociation($config['class']['menu'], 'mapOneToMany', array(
-            'fieldName'     => 'menu_items',
+            'fieldName'     => 'menuItems',
             'targetEntity'  => $config['class']['menu_item'],
             'cascade'       => array(
                 'persist',
             ),
             'mappedBy'      => 'menu',
-            'orphanRemoval' => false,
+            'orphanRemoval' => true,
         ));
     }
 }
