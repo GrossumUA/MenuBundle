@@ -17,17 +17,23 @@ class GrossumMenuExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
         $loader->load('classes.yml');
         $loader->load('admin.yml');
+
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (!isset($bundles['StofDoctrineExtensionsBundle'])) {
+            throw new \RuntimeException('Menu bundle requires a Stof Doctrine Extensions Bundle');
+        }
 
         $this->configureParameterClass($container, $config);
     }
 
     /**
      * @param ContainerBuilder $container
-     * @param $config
+     * @param array $config
      */
     public function configureParameterClass(ContainerBuilder $container, array $config)
     {

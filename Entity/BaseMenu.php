@@ -7,17 +7,17 @@ class BaseMenu
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var \DateTime
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
      * Set name
@@ -99,4 +99,3 @@ class BaseMenu
         return $this->getName() ?: 'New Menu';
     }
 }
-
