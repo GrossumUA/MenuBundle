@@ -2,9 +2,6 @@
 
 namespace Grossum\MenuBundle\Entity;
 
-/**
- * BaseMenuItem
- */
 abstract class BaseMenuItem
 {
     /**
@@ -32,7 +29,7 @@ abstract class BaseMenuItem
      *
      * @param string $name
      *
-     * @return BaseMenuItem
+     * @return $this
      */
     public function setName($name)
     {
@@ -56,7 +53,7 @@ abstract class BaseMenuItem
      *
      * @param \DateTime $createdAt
      *
-     * @return BaseMenuItem
+     * @return $this
      */
     public function setCreatedAt($createdAt)
     {
@@ -80,7 +77,7 @@ abstract class BaseMenuItem
      *
      * @param \DateTime $updatedAt
      *
-     * @return BaseMenuItem
+     * @return $this
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -104,7 +101,7 @@ abstract class BaseMenuItem
      *
      * @param BaseMenu $menu
      *
-     * @return BaseMenuItem
+     * @return $this
      */
     public function setMenu(BaseMenu $menu = null)
     {
