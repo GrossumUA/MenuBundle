@@ -5,7 +5,7 @@ namespace Grossum\MenuBundle\Entity;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class BaseMenu
+abstract class BaseMenu
 {
     /**
      * @var string

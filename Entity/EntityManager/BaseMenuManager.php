@@ -2,10 +2,11 @@
 
 namespace Grossum\MenuBundle\Entity\EntityManager;
 
-use Application\Grossum\MenuBundle\Entity\Repository\MenuRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Grossum\CoreBundle\Entity\EntityTrait\SaveUpdateInManagerTrait;
+
+use Application\Grossum\MenuBundle\Entity\Repository\MenuRepository;
 
 class BaseMenuManager
 {

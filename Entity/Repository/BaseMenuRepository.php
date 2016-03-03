@@ -4,6 +4,6 @@ namespace Grossum\MenuBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-class BaseMenuRepository extends EntityRepository
+abstract class BaseMenuRepository extends EntityRepository
 {
 }

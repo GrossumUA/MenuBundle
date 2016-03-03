@@ -5,7 +5,7 @@ namespace Grossum\MenuBundle\Entity;
 /**
  * BaseMenuItem
  */
-class BaseMenuItem
+abstract class BaseMenuItem
 {
     /**
      * @var string
