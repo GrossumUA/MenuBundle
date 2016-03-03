@@ -1,10 +1,21 @@
-Grossum\MenuBundle\Entity\BaseMenu:
+Grossum\MenuBundle\Entity\BaseMenuItem:
     type: mappedSuperclass
-    table: menu
+    table: menu_item
     fields:
-        name:
+        title:
             type: string
             length: 255
+        url:
+            type: string
+            length: 255
+        entityClass:
+            type: string
+            length: 255
+            column: entity_class
+        entityIdentifier:
+            type: string
+            length: 255
+            column: entity_identifier
         createdAt:
             type: datetime
             column: created_at

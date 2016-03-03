@@ -2,7 +2,10 @@
 
 namespace Grossum\MenuBundle\Entity;
 
-class BaseMenu
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+
+abstract class BaseMenu
 {
     /**
      * @var string
@@ -18,6 +21,19 @@ class BaseMenu
      * @var \DateTime
      */
     protected $updatedAt;
+
+    /**
+     * @var Collection
+     */
+    protected $menuItems;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->menuItems = new ArrayCollection();
+    }
 
     /**
      * Set name
@@ -97,5 +113,40 @@ class BaseMenu
     public function __toString()
     {
         return $this->getName() ?: 'New Menu';
+    }
+
+    /**
+     * Add menuItem
+     *
+     * @param BaseMenuItem $menuItem
+     *
+     * @return $this
+     */
+    public function addMenuItem(BaseMenuItem $menuItem)
+    {
+        $menuItem->setMenu($this);
+        $this->menuItems[] = $menuItem;
+
+        return $this;
+    }
+
+    /**
+     * Remove menuItem
+     *
+     * @param BaseMenuItem $menuItem
+     */
+    public function removeMenuItem(BaseMenuItem $menuItem)
+    {
+        $this->menuItems->removeElement($menuItem);
+    }
+
+    /**
+     * Get menuItems
+     *
+     * @return Collection
+     */
+    public function getMenuItems()
+    {
+        return $this->menuItems;
     }
 }
