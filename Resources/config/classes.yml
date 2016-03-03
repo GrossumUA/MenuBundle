@@ -1,7 +1,6 @@
 parameters:
     grossum_menu.menu.admin.class: Grossum\MenuBundle\Admin\MenuAdmin
 
-    grossum_menu.menu.entity.class: Grossum\MenuBundle\Entity\BaseMenu
     grossum_menu.menu.entity.manager.class: Grossum\MenuBundle\Entity\EntityManager\BaseMenuManager
 
     grossum_menu.menu.manager.class: Grossum\MenuBundle\Manager\MenuManager

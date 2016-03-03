@@ -18,11 +18,17 @@ class ContactMenuHandler extends AbstractMenuHandler
         return $this->router->generate('admin_grossum_contact_contact_list');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function generateEntityUrl($identifier)
     {
         return $this->router->generate('admin_grossum_contact_contact_edit', ['id' => $identifier]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getIdentifierClass()
     {
         return self::IDENTIFIER_CLASS;
