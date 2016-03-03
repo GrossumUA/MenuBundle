@@ -18,6 +18,11 @@
         "sonata-project/admin-bundle": "~2.2",
         "gedmo/doctrine-extensions": "~2.4"
     },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "2.*",
+        "phpmd/phpmd" : "@stable",
+        "sebastian/phpcpd": "*"
+    },
     "autoload" : {
         "psr-0" : {
             "Grossum\\MenuBundle" : ""
