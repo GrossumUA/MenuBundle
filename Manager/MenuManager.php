@@ -25,10 +25,11 @@ class MenuManager
      */
     public function getMenuHandler($className)
     {
-        if (!array_key_exists((string)$className, $this->handlers)) {
+        $className = (string)$className;
+        if (!array_key_exists($className, $this->handlers)) {
             throw new \InvalidArgumentException(sprintf('MenuHandlerInterface is messing for %s', $className));
         }
 
-        return $this->handlers[(string)$className];
+        return $this->handlers[$className];
     }
 }
