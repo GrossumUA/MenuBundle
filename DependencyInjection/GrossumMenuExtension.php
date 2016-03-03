@@ -7,6 +7,8 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
+use Sonata\EasyExtendsBundle\Mapper\DoctrineCollector;
+
 class GrossumMenuExtension extends Extension
 {
     /**
@@ -29,6 +31,7 @@ class GrossumMenuExtension extends Extension
         }
 
         $this->configureParameterClass($container, $config);
+        $this->registerDoctrineMapping($config);
     }
 
     /**
@@ -38,5 +41,40 @@ class GrossumMenuExtension extends Extension
     public function configureParameterClass(ContainerBuilder $container, array $config)
     {
         $container->setParameter('grossum_menu.menu.entity.class', $config['class']['menu']);
+        $container->setParameter('grossum_menu.menu_item.entity.class', $config['class']['menu_item']);
+    }
+
+    /**
+     * @param array $config
+     */
+    public function registerDoctrineMapping(array $config)
+    {
+        $collector = DoctrineCollector::getInstance();
+        $collector->addAssociation($config['class']['menu_item'], 'mapManyToOne', array(
+            'fieldName'     => 'menu',
+            'targetEntity'  => $config['class']['menu'],
+            'cascade'       => array(
+                'persist',
+            ),
+            'mappedBy'      => null,
+            'inversedBy'    => 'menuItems',
+            'joinColumns'   => array(
+                array(
+                    'name'                 => 'menu_id',
+                    'referencedColumnName' => 'id',
+                ),
+            ),
+            'orphanRemoval' => false,
+        ));
+
+        $collector->addAssociation($config['class']['menu'], 'mapOneToMany', array(
+            'fieldName'     => 'menuItems',
+            'targetEntity'  => $config['class']['menu_item'],
+            'cascade'       => array(
+                'persist',
+            ),
+            'mappedBy'      => 'menu',
+            'orphanRemoval' => true,
+        ));
     }
 }
