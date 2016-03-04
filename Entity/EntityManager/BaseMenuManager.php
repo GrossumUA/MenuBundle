@@ -5,8 +5,7 @@ namespace Grossum\MenuBundle\Entity\EntityManager;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Grossum\CoreBundle\Entity\EntityTrait\SaveUpdateInManagerTrait;
-
-use Application\Grossum\MenuBundle\Entity\Repository\MenuRepository;
+use Grossum\MenuBundle\Entity\Repository\BaseMenuRepository;
 
 class BaseMenuManager
 {
@@ -15,35 +14,35 @@ class BaseMenuManager
     /**
      * @var string
      */
-    private $menuClass;
+    protected $class;
 
     /**
-     * @var MenuRepository
+     * @var BaseMenuRepository
      */
-    private $repository;
+    protected $repository;
 
     /**
      * @var ObjectManager
      */
-    private $objectManager;
+    protected $objectManager;
 
     /**
      * @param ObjectManager $objectManager
-     * @param string $menuClass
+     * @param string $class
      */
-    public function __construct(ObjectManager $objectManager, $menuClass)
+    public function __construct(ObjectManager $objectManager, $class)
     {
         $this->objectManager = $objectManager;
-        $this->menuClass = $menuClass;
+        $this->class = $class;
     }
 
     /**
-     * @return MenuRepository
+     * @return BaseMenuRepository
      */
     public function getRepository()
     {
         if ($this->repository === null) {
-            $this->repository = $this->objectManager->getRepository($this->menuClass);
+            $this->repository = $this->objectManager->getRepository($this->class);
         }
 
         return $this->repository;

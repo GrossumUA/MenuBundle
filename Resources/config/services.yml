@@ -1,4 +1,22 @@
 services:
-#    grossum_menu.example:
-#        class: Grossum\MenuBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    grossum_menu.menu.entity.manager:
+        class: %grossum_menu.menu.manager.class%
+        arguments:
+            - @grossum_core.entity_manager
+            - %grossum_menu.menu.entity.class%
+
+    grossum_menu.menu.manager:
+        class: %grossum_menu.menu.manager.class%
+
+    grossum_menu.abstract.menu_handler:
+        class: %grossum_menu.abstract.menu_handler.class%
+        abstract: true
+        arguments:
+            - @router
+
+#ONLY FOR TEST. REMOVE IT WHEN FINISH
+    grossum_menu.contact.menu_handler:
+        class: %grossum_menu.contact.menu_handler.class%
+        parent: grossum_menu.abstract.menu_handler
+        tags:
+            - { name: grossum_menu.menu_handler }
