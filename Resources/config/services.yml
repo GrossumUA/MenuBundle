@@ -1,9 +1,18 @@
+parameters:
+    grossum_menu_tree_depth: 32
+
 services:
     grossum_menu.menu.entity.manager:
-        class: %grossum_menu.menu.manager.class%
+        class: %grossum_menu.menu.entity.manager.class%
         arguments:
             - @grossum_core.entity_manager
             - %grossum_menu.menu.entity.class%
+
+    grossum_menu.menu_item.entity.manager:
+        class: %grossum_menu.menu_item.entity.manager.class%
+        arguments:
+            - @grossum_core.entity_manager
+            - %grossum_menu.menu_item.entity.class%
 
     grossum_menu.menu.manager:
         class: %grossum_menu.menu.manager.class%
@@ -18,5 +27,31 @@ services:
     grossum_menu.contact.menu_handler:
         class: %grossum_menu.contact.menu_handler.class%
         parent: grossum_menu.abstract.menu_handler
+        calls:
+            - [setEntityManager, ["@grossum_core.entity_manager"]]
         tags:
             - { name: grossum_menu.menu_handler }
+
+#ONLY FOR TEST. REMOVE IT WHEN FINISH
+    grossum_menu.static_page.menu_handler:
+        class: %grossum_menu.static_page.menu_handler.class%
+        parent: grossum_menu.abstract.menu_handler
+        calls:
+            - [setEntityManager, ["@grossum_core.entity_manager"]]
+        tags:
+            - { name: grossum_menu.menu_handler }
+
+    grossum_menu.form.type.menu_entity_class:
+        class: %grossum_menu.form.type.menu_entity_class.class%
+        arguments:
+            - @grossum_menu.menu.manager
+        tags:
+            - { name: form.type, alias: 'grossum_menu_entity_class'}
+
+    grossum_menu.form.type.menu_entity_identifier:
+        class: %grossum_menu.form.type.menu_entity_identifier.class%
+        arguments:
+            - @doctrine
+            - @grossum_menu.menu.manager
+        tags:
+            - { name: form.type, alias: 'grossum_menu_entity_identifier'}

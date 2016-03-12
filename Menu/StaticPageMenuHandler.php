@@ -6,9 +6,9 @@ use Doctrine\ORM\EntityManager;
 
 use Grossum\MenuBundle\Handler\AbstractMenuHandler;
 
-class ContactMenuHandler extends AbstractMenuHandler
+class StaticPageMenuHandler extends AbstractMenuHandler
 {
-    const IDENTIFIER_CLASS = 'Application\Grossum\ContactBundle\Entity\Contact';
+    const IDENTIFIER_CLASS = 'Application\Grossum\StaticPageBundle\Entity\StaticPage';
 
     //TODO: This class only for testing. When we finish we NEED to remove IT;
 
@@ -22,7 +22,7 @@ class ContactMenuHandler extends AbstractMenuHandler
      */
     public function generateListUrl()
     {
-        return $this->router->generate('admin_grossum_contact_contact_list');
+        return $this->router->generate('admin_grossum_staticpage_staticpage_list');
     }
 
     /**
@@ -30,7 +30,7 @@ class ContactMenuHandler extends AbstractMenuHandler
      */
     public function generateEntityUrl($identifier)
     {
-        return $this->router->generate('admin_grossum_contact_contact_edit', ['id' => $identifier]);
+        return $this->router->generate('admin_grossum_staticpage_staticpage_edit', ['id' => $identifier]);
     }
 
     /**
@@ -43,12 +43,16 @@ class ContactMenuHandler extends AbstractMenuHandler
 
     public function getIdentifierList()
     {
-        $contacts = $this
+        $menuItems = $this
             ->entityManager
-            ->getRepository('ApplicationGrossumContactBundle:Contact')
-            ->findAll();
+            ->createQuery('
+                SELECT sp
+                FROM ApplicationGrossumStaticPageBundle:StaticPage AS sp
+                WHERE sp.parent IS NOT NULL
+            ')
+            ->getResult();
 
-        return $contacts;
+        return $menuItems;
     }
 
     /**
@@ -64,6 +68,6 @@ class ContactMenuHandler extends AbstractMenuHandler
      */
     public function getTitle()
     {
-        return 'Contact';
+        return 'Static page';
     }
 }

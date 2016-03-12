@@ -9,7 +9,12 @@ class MenuManager
     /**
      * @var MenuHandlerInterface[]
      */
-    protected $handlers = [];
+    private $handlers = [];
+
+    /**
+     * @var array [[id1 => title1], ...]
+     */
+    private $choiceList;
 
     /**
      * @param MenuHandlerInterface $menuHandler
@@ -25,11 +30,26 @@ class MenuManager
      */
     public function getMenuHandler($className)
     {
-        $className = (string)$className;
-        if (!array_key_exists($className, $this->handlers)) {
+        if (!isset($this->handlers[$className])) {
             throw new \InvalidArgumentException(sprintf('MenuHandlerInterface is messing for %s', $className));
         }
 
         return $this->handlers[$className];
+    }
+
+    /**
+     * @return array [[id1 => title1], ...]
+     */
+    public function getChoiceList()
+    {
+        if ($this->choiceList === null) {
+            $this->choiceList = [];
+
+            foreach ($this->handlers as $identifierClass => $handler) {
+                $this->choiceList[$identifierClass] = $handler->getTitle();
+            }
+        }
+
+        return $this->choiceList;
     }
 }

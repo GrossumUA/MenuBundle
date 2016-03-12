@@ -1,6 +1,20 @@
 grossum_menu:
     admin:
         menu:
-            label: 'Menu'
-            plural_label: 'Menus'
-            name: 'Name'
+            label:           'Menu'
+            plural_label:    'Menus'
+            name:            'Name'
+            list_view_label: 'List'
+            tree_view_label: 'Tree'
+        menu_item:
+            label:                    'Menu item'
+            title:                    'Title'
+            url:                      'Url'
+            parent:                   'Parent'
+            placeholder:              '==LIST=='
+            entity_class:             'Entity class'
+            entity_identifier:        'Entity identifier'
+            entity_class_placeholder: '==NONE=='
+        side_menu:
+            link_edit_page:  'Edit menu'
+            link_items_list: 'Items'

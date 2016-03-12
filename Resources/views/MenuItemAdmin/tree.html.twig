@@ -1,0 +1,65 @@
+{% extends 'SonataAdminBundle:CRUD:base_list.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('bundles/grossummenu/css/admin.css') }}">
+{% endblock stylesheets %}
+
+{% block meta_tags %}
+    {{ parent() }}
+
+    <meta name="grossum_menu.route.save_tree" content='{{ path('admin_grossum_menu_menu_menuitem_save-tree', {'id': menu.id}) }}'>
+    <meta name="grossum_menu.menu.tree_depth" content='{{ grossum_menu_tree_depth }}'>
+    <meta name="grossum_menu.entity.menu_item.constant.root_id" content='{{ constant('Grossum\\MenuBundle\\Entity\\BaseMenuItem::ROOT') }}'>
+{% endblock meta_tags %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="{{ asset('bundles/grossummenu/js/jquery.mjs.nestedSortable.js') }}"></script>
+    <script src="{{ asset('bundles/grossummenu/js/menu_item_tree.js') }}"></script>
+{% endblock javascripts %}
+
+{% macro navigate_child(collection, admin) %}
+    {% for element in collection %}
+        <li class="dd-item mjs-nestedSortable-collapsed" id="menuItem_{{ element.id }}" >
+            <div class="dd-handle">
+                <a class="sonata-link-identifier" href="{{ admin.generateUrl('edit', {'id': element.id}) }}">{{ element.title }}</a>
+            </div>
+
+            {% if element.children|length %}
+                <ol>
+                    {{ _self.navigate_child(element.children, admin) }}
+                </ol>
+            {% endif %}
+        </li>
+    {% endfor %}
+{% endmacro %}
+
+{% block tab_menu %}
+    {% include 'GrossumMenuBundle:MenuItemAdmin:list_tab_menu.html.twig' with {
+        'mode':   'tree',
+        'action': action,
+        'admin':  admin,
+    } only %}
+{% endblock %}
+
+{% block list_table %}
+    <div class="col-xs-12 col-md-12">
+        <div class="box box-primary">
+            {% if root.children|length %}
+                <div class="box-content">
+                    <ol class="sortable dd-list">
+                        {{ _self.navigate_child(root.children, admin) }}
+                    </ol>
+                </div>
+            {% else %}
+                <div class="callout callout-info">
+                    {{ 'grossum_menu.admin.menu.no_result'|trans({}, admin.translationDomain) }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

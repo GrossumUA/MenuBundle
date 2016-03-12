@@ -1,0 +1,16 @@
+{% extends 'SonataAdminBundle:CRUD:edit.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('bundles/grossummenu/js/menu_item_edit.js') }}"></script>
+{% endblock javascripts %}
+
+
+{% block meta_tags %}
+    {{ parent() }}
+
+    <meta name="grossum_menu.route.edit" content='{{ path('admin_grossum_menu_menu_menuitem_get-entity-identifiers-by-entity-class', {'id': admin.parent.idParameter}) }}'>
+    <meta name="grossum_menu.form.entity_class.id" content='{{ form.entityClass.vars.id }}'>
+    <meta name="grossum_menu.form.entity_identifier.id" content='{{ form.entityIdentifier.vars.id }}'>
+{% endblock meta_tags %}

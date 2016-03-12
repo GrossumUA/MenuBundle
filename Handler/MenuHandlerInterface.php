@@ -33,4 +33,14 @@ interface MenuHandlerInterface
      * @return string
      */
     public function getIdentifierClass();
+
+    /**
+     * @return array Doctrine-entity-array
+     */
+    public function getIdentifierList();
+
+    /**
+     * @return string
+     */
+    public function getTitle();
 }

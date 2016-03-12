@@ -1,0 +1,9 @@
+{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active'}, 'list') }}
+<div class="btn-group" style="float: left; padding: 8px; margin-left: 50px;">
+    <a type="button" class="btn {% if mode == 'list' %}btn-info active{% else %}btn-default{% endif %}" href="{{ admin.generateUrl('list') }}">
+        <i class="fa fa-list"></i> {{ 'grossum_menu.admin.menu.list_view_label'|trans }}
+    </a>
+    <a type="button" class="btn {% if mode == 'tree' %}btn-info active{% else %}btn-default{% endif %}" href="{{ admin.generateUrl('tree') }}">
+        <i class="fa fa-sitemap"></i> {{ 'grossum_menu.admin.menu.tree_view_label'|trans }}
+    </a>
+</div>
