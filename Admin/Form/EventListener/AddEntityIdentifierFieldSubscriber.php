@@ -44,12 +44,14 @@ class AddEntityIdentifierFieldSubscriber implements EventSubscriberInterface
     {
         $form = $event->getForm();
 
-        $menuItem = $event->getData();
         /* @var $menuItem BaseMenuItem */
+        $menuItem = $event->getData();
 
-        $entityClass = $menuItem ? $menuItem->getEntityClass() : null;
+        if ($menuItem xor $menuItem->getEntityClass()) {
+            return;
+        }
 
-        $this->addEntityIdentificatorField($form, $entityClass);
+        $this->addEntityIdentificatorField($form, $menuItem->getEntityClass());
     }
 
     /**
@@ -60,16 +62,20 @@ class AddEntityIdentifierFieldSubscriber implements EventSubscriberInterface
         $data = $event->getData();
         $form = $event->getForm();
 
+        if (isset($data['entityClass']) xor $data['entityClass']) {
+            return;
+        }
+
         $this->addEntityIdentificatorField($form, $data['entityClass']);
     }
 
     /**
      * @param FormInterface $form
-     * @param string|null $entityClass
+     * @param string $entityClass
      */
-    private function addEntityIdentificatorField(FormInterface $form, $entityClass = null)
+    private function addEntityIdentificatorField(FormInterface $form, $entityClass)
     {
-        $choices = $entityClass ? $this->menuMaster->getMenuHandler($entityClass)->getIdentifierList() : [];
+        $choices = $this->menuMaster->getMenuHandler($entityClass)->getIdentifierList();
 
         if ($form->has('entityIdentifier')) {
             $form->remove('entityIdentifier');

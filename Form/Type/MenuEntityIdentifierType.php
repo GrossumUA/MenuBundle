@@ -193,18 +193,25 @@ class MenuEntityIdentifierType extends AbstractType
     }
 
     /**
+     * @param mixed $choice
+     * @return string
+     */
+    public static function choiceLabel($choice)
+    {
+        return (string) $choice;
+    }
+
+    /**
      * @param Options $options
      * @return array|null
      */
-    private static function choiceLabel(Options $options)
+    public static function createLabelChoicer(Options $options)
     {
         if (!$options['class']) {
             return null;
         }
 
-        return function ($choice) {
-            return (string) $choice;
-        };
+        return [__CLASS__, 'choiceLabel'];
     }
 
     /**
@@ -281,7 +288,7 @@ class MenuEntityIdentifierType extends AbstractType
                 return $this->createChoiceLoader($options);
             },
             'choice_label'              => function (Options $options) {
-                return self::choiceLabel($options);
+                return self::createLabelChoicer($options);
             },
             'choice_name'               => function (Options $options) {
                 return self::choiceName($options);

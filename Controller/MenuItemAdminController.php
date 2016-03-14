@@ -96,7 +96,7 @@ class MenuItemAdminController extends Controller
 
             foreach ($entityIdentifiers as $entityIdentifier) {
                 $id    = (string) $idReader->getIdValue($entityIdentifier);
-                $label = MenuEntityIdentifierType::createChoiceLabel($entityIdentifier);
+                $label = MenuEntityIdentifierType::choiceLabel($entityIdentifier);
 
                 $data[$id] = $label;
             }

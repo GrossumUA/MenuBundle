@@ -2,6 +2,7 @@ parameters:
     grossum_menu.menu.admin.class:                       Grossum\MenuBundle\Admin\MenuAdmin
     grossum_menu.menu_item.admin.class:                  Grossum\MenuBundle\Admin\MenuItemAdmin
     grossum_menu.admin.menu_item_extension.class:        Grossum\MenuBundle\Admin\AdminExtension\MenuItemAdminExtension
+    grossum_menu.admin.menu_extension.class:             Grossum\MenuBundle\Admin\AdminExtension\MenuAdminExtension
 
     grossum_menu.menu.entity.manager.class:              Grossum\MenuBundle\Entity\EntityManager\BaseMenuManager
     grossum_menu.menu_item.entity.manager.class:         Grossum\MenuBundle\Entity\EntityManager\BaseMenuItemManager
