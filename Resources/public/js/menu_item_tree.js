@@ -18,9 +18,9 @@ $(function()
             toleranceElement: '> div',
             maxLevels: $head.find('meta[name="grossum_menu.menu.tree_depth"]').attr('content'),
             isTree: true,
-                expandOnHover: 700,
-                startCollapsed: false,
-                rootID: $head.find('meta[name="grossum_menu.entity.menu_item.constant.root_id"]').attr('content')
+            expandOnHover: 700,
+            startCollapsed: false,
+            rootID: $head.find('meta[name="grossum_menu.entity.menu_item.constant.root_id"]').attr('content')
         })
         .on('sortupdate', function()
         {
