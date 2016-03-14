@@ -54,38 +54,6 @@ class MenuEntityIdentifierType extends AbstractType
     private $menuMaster;
 
     /**
-     * Creates the label for a choice.
-     *
-     * @param object $choice The object.
-     *
-     * @return string The string representation of the object.
-     */
-    public static function createChoiceLabel($choice)
-    {
-        return (string) $choice;
-    }
-
-    /**
-     * Creates the field name for a choice.
-     *
-     * This method is used to generate field names if the underlying object has
-     * a single-column integer ID. In that case, the value of the field is
-     * the ID of the object. That ID is also used as field name.
-     *
-     * @param object     $choice The object.
-     * @param int|string $key    The choice key.
-     * @param string     $value  The choice value. Corresponds to the object's ID here.
-     *
-     * @return string The field name.
-     *
-     * @internal This method is public to be usable as callback. It should not be used in user code.
-     */
-    public static function createChoiceName($choice, $key, $value)
-    {
-        return str_replace('-', '_', (string) $value);
-    }
-
-    /**
      * @param ManagerRegistry $registry
      * @param MenuManager $menuMaster
      * @param PropertyAccessorInterface|null $propertyAccessor
@@ -141,113 +109,12 @@ class MenuEntityIdentifierType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+     * @param Options $options
+     * @return null|DoctrineChoiceLoader
      */
-    public function configureOptions(OptionsResolver $resolver)
+    private function createChoiceLoader(Options $options)
     {
-        $choiceLoader = function (Options $options) {
-            if (null === $options['choices']) {
-                if (!$options['class']) {
-                    return null;
-                }
-
-                $hash = CachingFactoryDecorator::generateHash([
-                    $options['em'],
-                    $options['class'],
-                ]);
-
-                if (isset($this->choiceLoaders[$hash])) {
-                    return $this->choiceLoaders[$hash];
-                }
-
-                $entityLoader = new EntityIdentifierChoiceLoader($this->menuMaster, $options['em'], $options['class']);
-
-                $doctrineChoiceLoader = new DoctrineChoiceLoader(
-                    $this->choiceListFactory,
-                    $options['em'],
-                    $options['class'],
-                    $options['id_reader'],
-                    $entityLoader
-                );
-
-                if ($hash !== null) {
-                    $this->choiceLoaders[$hash] = $doctrineChoiceLoader;
-                }
-
-                return $doctrineChoiceLoader;
-            }
-        };
-
-        $choiceLabel = function (Options $options) {
-            if (!$options['class']) {
-                return null;
-            }
-
-            return [__CLASS__, 'createChoiceLabel'];
-        };
-
-        $choiceName = function (Options $options) {
-            if (!$options['class']) {
-                return null;
-            }
-
-            /** @var IdReader $idReader */
-            $idReader = $options['id_reader'];
-
-            if ($idReader->isIntId()) {
-                return [__CLASS__, 'createChoiceName'];
-            }
-        };
-
-        // The choices are always indexed by ID (see "choices" normalizer
-        // and DoctrineChoiceLoader), unless the ID is composite. Then they
-        // are indexed by an incrementing integer.
-        // Use the ID/incrementing integer as choice value.
-        $choiceValue = function (Options $options) {
-            if (!$options['class']) {
-                return null;
-            }
-
-            /** @var IdReader $idReader */
-            $idReader = $options['id_reader'];
-
-            // If the entity has a single-column ID, use that ID as value
-            if ($idReader->isSingleId()) {
-                return [$idReader, 'getIdValue'];
-            }
-
-            // Otherwise, an incrementing integer is used as value automatically
-        };
-
-        $emNormalizer = function (Options $options, $em) {
-            if (!$options['class']) {
-                return $this->registry->getManager();
-            }
-
-            if (null !== $em) {
-                if ($em instanceof ObjectManager) {
-                    return $em;
-                }
-
-                return $this->registry->getManager($em);
-            }
-
-            $em = $this->registry->getManagerForClass($options['class']);
-
-            if (null === $em) {
-                throw new RuntimeException(sprintf(
-                    'Class "%s" seems not to be a managed Doctrine entity. '.
-                    'Did you forget to map it?',
-                    $options['class']
-                ));
-            }
-
-            return $em;
-        };
-
-        // Set the "id_reader" option via the normalizer. This option is not
-        // supposed to be set by the user.
-        $idReaderNormalizer = function (Options $options) {
+        if (null === $options['choices']) {
             if (!$options['class']) {
                 return null;
             }
@@ -257,35 +124,181 @@ class MenuEntityIdentifierType extends AbstractType
                 $options['class'],
             ]);
 
-            // The ID reader is a utility that is needed to read the object IDs
-            // when generating the field values. The callback generating the
-            // field values has no access to the object manager or the class
-            // of the field, so we store that information in the reader.
-            // The reader is cached so that two choice lists for the same class
-            // (and hence with the same reader) can successfully be cached.
-            if (!isset($this->idReaders[$hash])) {
-                $classMetadata = $options['em']->getClassMetadata($options['class']);
-                $this->idReaders[$hash] = new IdReader($options['em'], $classMetadata);
+            if (isset($this->choiceLoaders[$hash])) {
+                return $this->choiceLoaders[$hash];
             }
 
-            return $this->idReaders[$hash];
-        };
+            $entityLoader = new EntityIdentifierChoiceLoader($this->menuMaster, $options['em'], $options['class']);
 
+            $doctrineChoiceLoader = new DoctrineChoiceLoader(
+                $this->choiceListFactory,
+                $options['em'],
+                $options['class'],
+                $options['id_reader'],
+                $entityLoader
+            );
+
+            if ($hash !== null) {
+                $this->choiceLoaders[$hash] = $doctrineChoiceLoader;
+            }
+
+            return $doctrineChoiceLoader;
+        }
+    }
+
+    /**
+     * The choices are always indexed by ID (see "choices" normalizer
+     * and DoctrineChoiceLoader), unless the ID is composite. Then they
+     * are indexed by an incrementing integer.
+     * Use the ID/incrementing integer as choice value.
+     *
+     * @param Options $options
+     * @return array|null
+     */
+    private static function choiceValue(Options $options)
+    {
+        if (!$options['class']) {
+            return null;
+        }
+
+        /** @var IdReader $idReader */
+        $idReader = $options['id_reader'];
+
+        // If the entity has a single-column ID, use that ID as value
+        if ($idReader->isSingleId()) {
+            return [$idReader, 'getIdValue'];
+        }
+
+        // Otherwise, an incrementing integer is used as value automatically
+    }
+
+    /**
+     * @param Options $options
+     * @return array|null
+     */
+    private static function choiceName(Options $options)
+    {
+        if (!$options['class']) {
+            return null;
+        }
+
+        /** @var IdReader $idReader */
+        $idReader = $options['id_reader'];
+
+        if ($idReader->isIntId()) {
+            return function ($choice, $key, $value) {
+                return str_replace('-', '_', (string) $value);
+            };
+        }
+    }
+
+    /**
+     * @param Options $options
+     * @return array|null
+     */
+    private static function choiceLabel(Options $options)
+    {
+        if (!$options['class']) {
+            return null;
+        }
+
+        return function ($choice) {
+            return (string) $choice;
+        };
+    }
+
+    /**
+     * @param Options $options
+     * @return null|IdReader
+     */
+    private function normalizeIdReader(Options $options)
+    {
+        if (!$options['class']) {
+            return null;
+        }
+
+        $hash = CachingFactoryDecorator::generateHash([
+            $options['em'],
+            $options['class'],
+        ]);
+
+        // The ID reader is a utility that is needed to read the object IDs
+        // when generating the field values. The callback generating the
+        // field values has no access to the object manager or the class
+        // of the field, so we store that information in the reader.
+        // The reader is cached so that two choice lists for the same class
+        // (and hence with the same reader) can successfully be cached.
+        if (!isset($this->idReaders[$hash])) {
+            $classMetadata = $options['em']->getClassMetadata($options['class']);
+            $this->idReaders[$hash] = new IdReader($options['em'], $classMetadata);
+        }
+
+        return $this->idReaders[$hash];
+    }
+
+    /**
+     * @param Options $options
+     * @param $em
+     * @return ObjectManager|null
+     */
+    private function normalizeEm(Options $options, $em)
+    {
+        if (!$options['class']) {
+            return $this->registry->getManager();
+        }
+
+        if (null !== $em) {
+            if ($em instanceof ObjectManager) {
+                return $em;
+            }
+
+            return $this->registry->getManager($em);
+        }
+
+        $em = $this->registry->getManagerForClass($options['class']);
+
+        if (null === $em) {
+            throw new RuntimeException(sprintf(
+                'Class "%s" seems not to be a managed Doctrine entity. '.
+                'Did you forget to map it?',
+                $options['class']
+            ));
+        }
+
+        return $em;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
         $resolver->setDefaults([
             'class'                     => null,
             'em'                        => null,
             'choices'                   => null,
-            'choices_as_values'         => true,
-            'choice_loader'             => $choiceLoader,
-            'choice_label'              => $choiceLabel,
-            'choice_name'               => $choiceName,
-            'choice_value'              => $choiceValue,
+            'choice_loader'             => function (Options $options) {
+                return $this->createChoiceLoader($options);
+            },
+            'choice_label'              => function (Options $options) {
+                return self::choiceLabel($options);
+            },
+            'choice_name'               => function (Options $options) {
+                return self::choiceName($options);
+            },
+            'choice_value'              => function (Options $options) {
+                return self::choiceValue($options);
+            },
             'id_reader'                 => null,
             'choice_translation_domain' => false,
         ]);
 
-        $resolver->setNormalizer('em', $emNormalizer);
-        $resolver->setNormalizer('id_reader', $idReaderNormalizer);
+        $resolver->setNormalizer('em', function (Options $options, $em) {
+            return $this->normalizeEm($options, $em);
+        });
+        $resolver->setNormalizer('id_reader', function (Options $options) {
+            return $this->normalizeIdReader($options);
+        });
 
         $resolver->setAllowedTypes('em', ['null', 'string', 'Doctrine\Common\Persistence\ObjectManager']);
     }
