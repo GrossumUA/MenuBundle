@@ -27,7 +27,6 @@ services:
         class: %grossum_menu.admin.menu_extension.class%
         arguments:
             - @grossum_menu.menu_item.entity.manager
-            - @grossum_core.entity_manager
         tags:
             - { name: sonata.admin.extension, target: grossum_menu.admin.menu }
 

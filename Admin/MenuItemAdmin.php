@@ -24,12 +24,12 @@ class MenuItemAdmin extends Admin
     /**
      * @var BaseMenuItemManager
      */
-    private $menuItemManager;
+    protected $menuItemManager;
 
     /**
      * @var MenuManager
      */
-    private $menuMaster;
+    protected $menuMaster;
 
     /**
      * {@inheritdoc}

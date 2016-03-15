@@ -51,11 +51,22 @@ class BaseMenuItemManager
     }
 
     /**
+     * @param BaseMenu $menu
      * @return BaseMenuItem
      */
-    public function createEntityInstance()
+    public function createRootMenuItemForMenu(BaseMenu $menu)
     {
-        return new $this->menuItemClass();
+        /* @var $rootMenuItem BaseMenuItem */
+        $rootMenuItem = new $this->menuItemClass();
+
+        // @todo: if site is multi language so add translations for other languages
+        $rootMenuItem->setTitle(BaseMenuItem::ROOT);
+        $rootMenuItem->setUrl(BaseMenuItem::ROOT);
+        $rootMenuItem->setMenu($menu);
+
+        $this->entityManager->persist($rootMenuItem);
+
+        return $rootMenuItem;
     }
 
     /**
