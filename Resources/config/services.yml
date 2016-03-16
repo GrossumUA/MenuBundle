@@ -51,7 +51,6 @@ services:
     grossum_menu.form.type.menu_entity_identifier:
         class: %grossum_menu.form.type.menu_entity_identifier.class%
         arguments:
-            - @doctrine
             - @grossum_menu.menu.manager
         tags:
             - { name: form.type, alias: 'grossum_menu_entity_identifier'}

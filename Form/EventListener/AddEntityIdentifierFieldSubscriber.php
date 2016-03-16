@@ -47,9 +47,11 @@ class AddEntityIdentifierFieldSubscriber implements EventSubscriberInterface
         /* @var $menuItem BaseMenuItem */
         $menuItem = $event->getData();
 
-        $entityClass = $menuItem ? $menuItem->getEntityClass() : null;
+        if (!$menuItem || !$menuItem->getEntityClass()) {
+            return;
+        }
 
-        $this->modifyForm($form, $entityClass);
+        $this->modifyForm($form, $menuItem->getEntityClass());
     }
 
     /**
@@ -60,14 +62,18 @@ class AddEntityIdentifierFieldSubscriber implements EventSubscriberInterface
         $form = $event->getForm();
         $data = $event->getData();
 
+        if (!$data || !isset($data['entityClass']) || !$data['entityClass']) {
+            return;
+        }
+
         $this->modifyForm($form, $data['entityClass']);
     }
 
     /**
      * @param FormInterface $form
-     * @param string|null $entityClass
+     * @param string $entityClass
      */
-    private function modifyForm(FormInterface $form, $entityClass = null)
+    private function modifyForm(FormInterface $form, $entityClass)
     {
         if ($form->has('entityIdentifier')) {
             $form->remove('entityIdentifier');

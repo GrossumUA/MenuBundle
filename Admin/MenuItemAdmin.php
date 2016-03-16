@@ -2,7 +2,6 @@
 
 namespace Grossum\MenuBundle\Admin;
 
-use Grossum\MenuBundle\Form\Type\MenuEntityIdentifierType;
 use Grossum\MenuBundle\Form\Type\MenuEntityClassType;
 
 use Sonata\AdminBundle\Admin\Admin;
@@ -13,6 +12,7 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Grossum\MenuBundle\Entity\EntityManager\BaseMenuItemManager;
 use Grossum\MenuBundle\Manager\MenuManager;
 use Grossum\MenuBundle\Form\EventListener\AddEntityIdentifierFieldSubscriber;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class MenuItemAdmin extends Admin
 {
@@ -39,7 +39,15 @@ class MenuItemAdmin extends Admin
         $routes
             ->add('tree', 'tree')
             ->add('save-tree', 'save-tree')
-            ->add('get-entity-identifiers-by-entity-class', 'get-entity-identifiers-by-entity-class');
+            ->add(
+                'get-entity-identifiers-by-entity-class',
+                '{childId}/get-entity-identifiers-by-entity-class',
+                [],
+                [],
+                [
+                    'methods' => ['POST']
+                ]
+            );
     }
 
     /**
@@ -82,7 +90,12 @@ class MenuItemAdmin extends Admin
             )
             ->add(
                 'entityIdentifier',
-                MenuEntityIdentifierType::class
+                ChoiceType::class,
+                [
+                    'required'    => false,
+                    'label'       => 'grossum_menu.admin.menu_item.entity_identifier',
+                    'placeholder' => 'grossum_menu.admin.menu_item.placeholder',
+                ]
             );
 
         $formMapper

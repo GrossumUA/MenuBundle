@@ -2,15 +2,16 @@
 
 namespace Grossum\MenuBundle\Controller;
 
+use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bridge\Doctrine\Form\ChoiceList\IdReader;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 
 use Grossum\MenuBundle\Entity\BaseMenu;
-use Grossum\MenuBundle\Form\Type\MenuEntityIdentifierType;
 
 class MenuItemAdminController extends Controller
 {
@@ -79,32 +80,43 @@ class MenuItemAdminController extends Controller
      */
     public function getEntityIdentifiersByEntityClassAction(Request $request)
     {
-        $entityClass = $request->request->get('entityClass');
+        $elementId = $request->get('elementId');
+        $uniqid    = $request->get('uniqid');
 
-        $data = [];
-
-        if ($entityClass) {
-            $entityIdentifiers = $this
-                ->get('grossum_menu.menu.manager')
-                ->getMenuHandler($entityClass)
-                ->getIdentifierList();
-
-            $em = $this->get('grossum_core.entity_manager');
-
-            $classMetadata = $this->get('grossum_core.entity_manager')->getClassMetadata($entityClass);
-            $idReader = new IdReader($em, $classMetadata);
-
-            foreach ($entityIdentifiers as $entityIdentifier) {
-                $id    = (string) $idReader->getIdValue($entityIdentifier);
-                $label = MenuEntityIdentifierType::choiceLabel($entityIdentifier);
-
-                $data[$id] = $label;
-            }
+        if ($uniqid) {
+            $this->admin->setUniqid($uniqid);
         }
+
+        $id = $request->get($this->admin->getIdParameter());
+        $object = $this->admin->getObject($id);
+
+        if (!$object) {
+            throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
+        }
+
+        if (false === $this->admin->isGranted('EDIT', $object)) {
+            throw new AccessDeniedException();
+        }
+
+        $this->admin->setSubject($object);
+
+        $form = $this->admin->getForm();
+        $form->setData($object);
+        $form->handleRequest($request);
+
+        $twig = $this->get('twig');
+
+        /* @var $extension FormExtension */
+        $extension =$twig->getExtension('form');
+        $extension->initRuntime($twig);
+
+        $elementView = $this->get('sonata.admin.helper')->getChildFormView($form->createView(), $elementId);
+
+        $extension->renderer->setTheme($elementView, $this->admin->getFormTheme());
 
         return new JsonResponse([
             'result'            => true,
-            'entityIdentifiers' => $data
+            'entityIdentifiers' => $extension->renderer->searchAndRenderBlock($elementView, 'widget')
         ]);
     }
 }
