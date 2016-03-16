@@ -14,10 +14,10 @@ class DefaultController extends Controller
     {
         //TODO: ONLY FOR TESTING
 
-        $menuManager = $this->get('grossum_menu.menu.manager');
-        $handler = $menuManager->getMenuHandler('GrossumContactBundle:Contact');
-        $string = '<a href="' . $handler->getUrl() . '">List</a><br>';
+//        $menuManager = $this->get('grossum_menu.menu.manager');
+//        $handler = $menuManager->getMenuHandler('GrossumContactBundle:Contact');
+//        $string = '<a href="' . $handler->getUrl() . '">List</a><br>';
 
-        return (new Response($string));
+        return $this->render('GrossumMenuBundle:Default:index.html.twig');
     }
 }

@@ -16,3 +16,5 @@ parameters:
 
     grossum_menu.form.type.menu_entity_class.class:      Grossum\MenuBundle\Form\Type\MenuEntityClassType
     grossum_menu.form.type.menu_entity_identifier.class: Grossum\MenuBundle\Form\Type\MenuEntityIdentifierType
+
+    grossum_menu.provider.menu_provider:                 Grossum\MenuBundle\Provider\MenuProvider
