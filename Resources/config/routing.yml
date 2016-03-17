@@ -1,5 +1,0 @@
-#ONLY FOR TEST. NEEDS REMOVE AT THE END
-#ADD THIS ROUTING TO MAIN ROUTING CONFIG
-grossum_index:
-    path:      /contact
-    defaults:  { _controller: GrossumMenuBundle:Default:index }

@@ -23,24 +23,6 @@ services:
         arguments:
             - @router
 
-#ONLY FOR TEST. REMOVE IT WHEN FINISH
-    grossum_menu.contact.menu_handler:
-        class: %grossum_menu.contact.menu_handler.class%
-        parent: grossum_menu.abstract.menu_handler
-        calls:
-            - [setEntityManager, ["@grossum_core.entity_manager"]]
-        tags:
-            - { name: grossum_menu.menu_handler }
-
-#ONLY FOR TEST. REMOVE IT WHEN FINISH
-    grossum_menu.static_page.menu_handler:
-        class: %grossum_menu.static_page.menu_handler.class%
-        parent: grossum_menu.abstract.menu_handler
-        calls:
-            - [setEntityManager, ["@grossum_core.entity_manager"]]
-        tags:
-            - { name: grossum_menu.menu_handler }
-
     grossum_menu.form.type.menu_entity_class:
         class: %grossum_menu.form.type.menu_entity_class.class%
         arguments:

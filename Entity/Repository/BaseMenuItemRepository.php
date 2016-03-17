@@ -68,8 +68,6 @@ abstract class BaseMenuItemRepository extends NestedTreeRepository
             return $this->findMenuItems($menuId);
         }
 
-        // @todo: может вместо получения списка исключения, использовать lft, rgt ???
-
         $exceptThis = $this->getChildren($entity);
         $exceptThis[] = $entity;
 
