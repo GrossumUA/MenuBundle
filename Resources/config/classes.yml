@@ -11,8 +11,5 @@ parameters:
 
     grossum_menu.abstract.menu_handler.class:            Grossum\MenuBundle\Handler\AbstractMenuHandler
 
-    grossum_menu.contact.menu_handler.class:             Grossum\MenuBundle\Menu\ContactMenuHandler
-    grossum_menu.static_page.menu_handler.class:         Grossum\MenuBundle\Menu\StaticPageMenuHandler
-
     grossum_menu.form.type.menu_entity_class.class:      Grossum\MenuBundle\Form\Type\MenuEntityClassType
     grossum_menu.form.type.menu_entity_identifier.class: Grossum\MenuBundle\Form\Type\MenuEntityIdentifierType
