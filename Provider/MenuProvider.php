@@ -52,6 +52,25 @@ class MenuProvider implements MenuProviderInterface
     }
 
     /**
+     * @param $name
+     * @return null|BaseMenu
+     */
+    protected function find($name)
+    {
+        return $this->menuManager->getRepository()->findOneBy(['name' => $name]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function has($name, array $options = [])
+    {
+        $menu = $this->find($name);
+
+        return $menu !== null;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function get($name, array $options = [])
@@ -69,48 +88,35 @@ class MenuProvider implements MenuProviderInterface
         $nestedTree     = $repo->buildTreeArray($treeNodes);
         $childrenIndex  = $repo->getChildrenIndex();
 
-        $build = function (array $tree, ItemInterface $parent) use (&$build, $childrenIndex) {
-            foreach ($tree as $node) {
-                if (null !== $node['url']) {
-                    $uri = $node['url'];
-                } else {
-                    $uri = $this
-                        ->menuMaster
-                        ->getMenuHandler($node['entityClass'])
-                        ->generateEntityUrl($node['entityIdentifier']);
-                }
-
-                $child = $parent->addChild($node['title'], ['uri' => $uri]);
-
-                if (count($node[$childrenIndex])) {
-                    $build($node[$childrenIndex], $child);
-                }
-            }
-        };
-
         $menu = $this->factory->createItem('root');
 
-        $build($nestedTree, $menu);
+        $this->addChildrenToMenuItem($menu, $nestedTree, $childrenIndex);
 
         return $menu;
     }
 
     /**
-     * {@inheritdoc}
+     * @param ItemInterface $parent
+     * @param array $tree
+     * @param string $childrenIndex
      */
-    public function has($name, array $options = [])
+    private function addChildrenToMenuItem(ItemInterface $parent, array $tree, $childrenIndex)
     {
-        $menu = $this->find($name);
+        foreach ($tree as $node) {
+            if (null !== $node['url']) {
+                $uri = $node['url'];
+            } else {
+                $uri = $this
+                    ->menuMaster
+                    ->getMenuHandler($node['entityClass'])
+                    ->generateEntityUrl($node['entityIdentifier']);
+            }
 
-        return $menu !== null;
-    }
+            $child = $parent->addChild($node['title'], ['uri' => $uri]);
 
-    /**
-     * @param $name
-     * @return null|BaseMenu
-     */
-    protected function find($name)
-    {
-        return $this->menuManager->getRepository()->findOneBy(['name' => $name]);
+            if (count($node[$childrenIndex])) {
+                $this->addChildrenToMenuItem($child, $node[$childrenIndex], $childrenIndex);
+            }
+        }
     }
 }
