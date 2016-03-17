@@ -55,7 +55,7 @@ services:
         tags:
             - { name: form.type, alias: 'grossum_menu_entity_identifier'}
 
-    app.menu_provider:
+    grossum_menu.provider.menu_provider:
         class: %grossum_menu.provider.menu_provider%
         arguments:
             - @knp_menu.factory
