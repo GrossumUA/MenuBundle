@@ -10,7 +10,14 @@
 {% block meta_tags %}
     {{ parent() }}
 
-    <meta name="grossum_menu.route.edit" content='{{ path('admin_grossum_menu_menu_menuitem_get-entity-identifiers-by-entity-class', app.request.attributes.get('_route_params')|merge({'elementId': form.entityIdentifier.vars.id, 'uniqid': admin.uniqid })) }}'>
+    <meta name="grossum_menu.route.edit" content='{{ path(
+        'admin_grossum_menu_menu_menuitem_get-entity-identifiers-by-entity-class',
+        app.request.attributes.get('_route_params')|merge({
+            'elementId': form.entityIdentifier.vars.id,
+            'uniqid': admin.uniqid,
+            'objectId': admin.subject ? admin.subject.id : null
+        })
+    ) }}'>
     <meta name="grossum_menu.form.entity_class.id" content='{{ form.entityClass.vars.id }}'>
     <meta name="grossum_menu.form.entity_identifier.id" content='{{ form.entityIdentifier.vars.id }}'>
 {% endblock meta_tags %}

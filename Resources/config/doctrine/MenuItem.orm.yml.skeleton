@@ -9,8 +9,6 @@ Application\Grossum\MenuBundle\Entity\MenuItem:
             id: true
             generator:
                 strategy: AUTO
-#    @todo: We wrote associations here because Gedmo-Extension can see associations only in config-file - it doesn't use
-#           Doctrtine metadata. Todo: remove when we should can use Doctrtine metadata
     manyToOne:
         root:
             targetEntity: Application\Grossum\MenuBundle\Entity\MenuItem

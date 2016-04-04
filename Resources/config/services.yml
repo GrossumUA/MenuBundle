@@ -2,14 +2,14 @@ parameters:
     grossum_menu_tree_depth: 32
 
 services:
-    grossum_menu.menu.entity.manager:
-        class: %grossum_menu.menu.entity.manager.class%
+    grossum_menu.entity_manager.menu.manager:
+        class: %grossum_menu.entity_manager.menu.class%
         arguments:
             - @grossum_core.entity_manager
             - %grossum_menu.menu.entity.class%
 
-    grossum_menu.menu_item.entity.manager:
-        class: %grossum_menu.menu_item.entity.manager.class%
+    grossum_menu.entity.manager.menu_item.manager:
+        class: %grossum_menu.entity_manager.menu_item.class%
         arguments:
             - @grossum_core.entity_manager
             - %grossum_menu.menu_item.entity.class%

@@ -8,8 +8,8 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 
 use Grossum\MenuBundle\Entity\BaseMenuItem;
-use Grossum\MenuBundle\Manager\MenuManager;
 use Grossum\MenuBundle\Form\Type\MenuEntityIdentifierType;
+use Grossum\MenuBundle\Manager\MenuManager;
 
 class AddEntityIdentifierFieldSubscriber implements EventSubscriberInterface
 {
@@ -62,7 +62,7 @@ class AddEntityIdentifierFieldSubscriber implements EventSubscriberInterface
         $form = $event->getForm();
         $data = $event->getData();
 
-        if (!$data || !isset($data['entityClass']) || !$data['entityClass']) {
+        if (!isset($data['entityClass']) || !$data['entityClass']) {
             return;
         }
 
@@ -75,19 +75,19 @@ class AddEntityIdentifierFieldSubscriber implements EventSubscriberInterface
      */
     private function modifyForm(FormInterface $form, $entityClass)
     {
-        if ($form->has('entityIdentifier')) {
-            $form->remove('entityIdentifier');
-        }
+        $entityIdentifier = $form->get('entityIdentifier');
+        $options = $entityIdentifier->getConfig()->getOptions();
 
-        $form->add(
-            'entityIdentifier',
-            MenuEntityIdentifierType::class,
-            [
-                'required'    => false,
-                'class'       => $entityClass,
-                'label'       => 'grossum_menu.admin.menu_item.entity_identifier',
-                'placeholder' => 'grossum_menu.admin.menu_item.placeholder',
-            ]
-        );
+        $form
+            ->add(
+                'entityIdentifier',
+                MenuEntityIdentifierType::class,
+                [
+                    'class'       => $entityClass,
+                    'required'    => $options['required'],
+                    'label'       => $options['label'],
+                    'placeholder' => $options['placeholder'],
+                ]
+            );
     }
 }

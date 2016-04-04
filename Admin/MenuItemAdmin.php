@@ -2,7 +2,7 @@
 
 namespace Grossum\MenuBundle\Admin;
 
-use Grossum\MenuBundle\Form\Type\MenuEntityClassType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -10,9 +10,9 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 
 use Grossum\MenuBundle\Entity\EntityManager\BaseMenuItemManager;
-use Grossum\MenuBundle\Manager\MenuManager;
+use Grossum\MenuBundle\Form\Type\MenuEntityClassType;
 use Grossum\MenuBundle\Form\EventListener\AddEntityIdentifierFieldSubscriber;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Grossum\MenuBundle\Manager\MenuManager;
 
 class MenuItemAdmin extends Admin
 {
@@ -39,15 +39,7 @@ class MenuItemAdmin extends Admin
         $routes
             ->add('tree', 'tree')
             ->add('save-tree', 'save-tree')
-            ->add(
-                'get-entity-identifiers-by-entity-class',
-                '{childId}/get-entity-identifiers-by-entity-class',
-                [],
-                [],
-                [
-                    'methods' => ['POST']
-                ]
-            );
+            ->add('get-entity-identifiers-by-entity-class', 'get-entity-identifiers-by-entity-class');
     }
 
     /**

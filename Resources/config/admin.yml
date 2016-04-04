@@ -19,20 +19,20 @@ services:
             - %grossum_menu.menu_item.entity.class%
             - GrossumMenuBundle:MenuItemAdmin
         calls:
-            - [setMenuItemManager, ["@grossum_menu.menu_item.entity.manager"]]
+            - [setMenuItemManager, ["@grossum_menu.entity.manager.menu_item.manager"]]
             - [setMenuMaster, ["@grossum_menu.menu.manager"]]
             - [setTemplates, [{list: "GrossumMenuBundle:MenuItemAdmin:list.html.twig", edit: "GrossumMenuBundle:MenuItemAdmin:edit.html.twig"}]]
 
     grossum_menu.admin.menu_extension:
         class: %grossum_menu.admin.menu_extension.class%
         arguments:
-            - @grossum_menu.menu_item.entity.manager
+            - @grossum_menu.entity.manager.menu_item.manager
         tags:
             - { name: sonata.admin.extension, target: grossum_menu.admin.menu }
 
     grossum_menu.admin.menu_item_extension:
         class: %grossum_menu.admin.menu_item_extension.class%
         arguments:
-            - @grossum_menu.menu_item.entity.manager
+            - @grossum_menu.entity.manager.menu_item.manager
         tags:
             - { name: sonata.admin.extension, target: grossum_menu.admin.menu_item }

@@ -7,22 +7,22 @@ use Symfony\Bridge\Doctrine\Form\ChoiceList\IdReader;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
-class IdToMenuItem implements DataTransformerInterface
+class IdToMenuItemTransformer implements DataTransformerInterface
 {
     /**
      * @var ObjectManager
      */
-    private $manager;
+    protected $manager;
 
     /**
      * @var string
      */
-    private $class;
+    protected $class;
 
     /**
      * @var IdReader
      */
-    private $idReader;
+    protected $idReader;
 
     /**
      * @param ObjectManager $manager

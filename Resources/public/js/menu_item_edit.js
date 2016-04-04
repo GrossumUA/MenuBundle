@@ -24,6 +24,8 @@ $(function()
                     var $newEntityIdentifiers = $(response.entityIdentifiers);
 
                     $entityIdentifier.empty().append($newEntityIdentifiers.children()).change();
+
+                    $entityIdentifier.select2('val', $entityIdentifier.find('option:first').attr('value'));
                 }
             },
             complete: function()

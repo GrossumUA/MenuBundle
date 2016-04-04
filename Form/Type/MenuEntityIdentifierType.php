@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 use Grossum\MenuBundle\Form\ChoiceList\EntityIdentifierChoiceLoader;
-use Grossum\MenuBundle\Form\DataTransformer\IdToMenuItem;
+use Grossum\MenuBundle\Form\DataTransformer\IdToMenuItemTransformer;
 use Grossum\MenuBundle\Manager\MenuManager;
 
 class MenuEntityIdentifierType extends AbstractType
@@ -62,7 +62,7 @@ class MenuEntityIdentifierType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addModelTransformer(
-            new IdToMenuItem($options['em'], $options['class'], $options['id_reader'])
+            new IdToMenuItemTransformer($options['em'], $options['class'], $options['id_reader'])
         );
     }
 

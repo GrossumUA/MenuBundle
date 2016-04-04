@@ -158,7 +158,6 @@ abstract class BaseMenuItem
     }
 
     /**
-    *
      * @return string
      */
     public function getEntityIdentifier()

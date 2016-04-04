@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 
@@ -23,14 +22,15 @@ class MenuItemAdminController extends Controller
     public function treeAction(Request $request)
     {
         $menuId = $request->get($this->admin->getParent()->getIdParameter());
+
+        /* @var $menu BaseMenu */
         $menu = $this
-            ->get('grossum_menu.menu.entity.manager')
+            ->get('grossum_menu.entity_manager.menu.manager')
             ->getRepository()
             ->find($menuId);
-        /* @var $menu BaseMenu */
 
         $root = $this
-            ->get('grossum_menu.menu_item.entity.manager')
+            ->get('grossum_menu.entity.manager.menu_item.manager')
             ->getRepository()
             ->findMenuRootItem($menu);
 
@@ -56,13 +56,14 @@ class MenuItemAdminController extends Controller
         $tree = $request->request->get('tree');
 
         $menuId = $request->get($this->admin->getParent()->getIdParameter());
+
+        /* @var $menu BaseMenu */
         $menu = $this
-            ->get('grossum_menu.menu.entity.manager')
+            ->get('grossum_menu.entity_manager.menu.manager')
             ->getRepository()
             ->find($menuId);
-        /* @var $menu BaseMenu */
 
-        $menuItemManager = $this->get('grossum_menu.menu_item.entity.manager');
+        $menuItemManager = $this->get('grossum_menu.entity.manager.menu_item.manager');
         $verified = $menuItemManager->updateAndVerifyTree($tree, $menu);
 
         if ($verified !== true) {
@@ -82,26 +83,25 @@ class MenuItemAdminController extends Controller
     {
         $elementId = $request->get('elementId');
         $uniqid    = $request->get('uniqid');
+        $objectId  = $request->get('objectId');
 
         if ($uniqid) {
             $this->admin->setUniqid($uniqid);
         }
 
-        $id = $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
-
-        if (!$object) {
-            throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
+        $subject = $this->admin->getModelManager()->find($this->admin->getClass(), $objectId);
+        if ($objectId && !$subject) {
+            throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $objectId));
         }
 
-        if (false === $this->admin->isGranted('EDIT', $object)) {
-            throw new AccessDeniedException();
+        if (!$subject) {
+            $subject = $this->admin->getNewInstance();
         }
 
-        $this->admin->setSubject($object);
+        $this->admin->setSubject($subject);
 
         $form = $this->admin->getForm();
-        $form->setData($object);
+        $form->setData($subject);
         $form->handleRequest($request);
 
         $twig = $this->get('twig');

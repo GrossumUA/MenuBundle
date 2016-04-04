@@ -27,16 +27,7 @@ abstract class BaseMenuItemRepository extends NestedTreeRepository
                 $qb->expr()->notIn('menu_item.id', ':except')
             )
             ->setParameter('menu', $menuId)
-            ->setParameter(
-                'except',
-                array_map(
-                    function ($menuItem) {
-                        /* @var $menuItem BaseMenuItem */
-                        return $menuItem->getId();
-                    },
-                    $except
-                )
-            );
+            ->setParameter('except', $except);
 
         return $qb->getQuery()->getResult();
     }
