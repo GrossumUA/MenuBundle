@@ -36,3 +36,17 @@ services:
             - @grossum_menu.menu.manager
         tags:
             - { name: form.type, alias: 'grossum_menu_entity_identifier'}
+
+    grossum_menu.event_listener.menu_subscriber:
+        class: Grossum\MenuBundle\EventListener\MenuSubscriber
+        arguments:
+            - @service_container
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+
+    grossum_menu.event_listener.menu_item_subscriber:
+        class: Grossum\MenuBundle\EventListener\MenuItemSubscriber
+        arguments:
+            - @service_container
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }

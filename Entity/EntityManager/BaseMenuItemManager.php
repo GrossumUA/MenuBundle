@@ -64,8 +64,6 @@ class BaseMenuItemManager
         $rootMenuItem->setUrl(BaseMenuItem::ROOT);
         $rootMenuItem->setMenu($menu);
 
-        $this->entityManager->persist($rootMenuItem);
-
         return $rootMenuItem;
     }
 

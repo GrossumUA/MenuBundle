@@ -212,7 +212,11 @@ abstract class BaseMenuItem
      */
     public function setMenu(BaseMenu $menu)
     {
-        $this->menu = $menu;
+        if ($menu !== $this->menu) {
+            $this->menu = $menu;
+
+            $menu->addMenuItem($this);
+        }
 
         return $this;
     }

@@ -104,7 +104,11 @@ abstract class BaseMenu
      */
     public function addMenuItem(BaseMenuItem $menuItem)
     {
-        $this->menuItems[] = $menuItem;
+        if (!$this->menuItems->contains($menuItem)) {
+            $this->menuItems[] = $menuItem;
+
+            $menuItem->setMenu($this);
+        }
 
         return $this;
     }
