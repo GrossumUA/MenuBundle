@@ -29,6 +29,10 @@ class MenuItemAdminController extends Controller
             ->getRepository()
             ->find($menuId);
 
+        if (!$menu) {
+            throw $this->createNotFoundException(sprintf('Menu with id "%s" not found', $menuId));
+        }
+
         $root = $this
             ->get('grossum_menu.entity.manager.menu_item.manager')
             ->getRepository()
