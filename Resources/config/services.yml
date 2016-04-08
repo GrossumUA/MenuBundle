@@ -37,16 +37,19 @@ services:
         tags:
             - { name: form.type, alias: 'grossum_menu_entity_identifier'}
 
-    grossum_menu.event_listener.menu_subscriber:
-        class: Grossum\MenuBundle\EventListener\MenuSubscriber
+    grossum_menu.event_listener.menu_listener:
+        class: Grossum\MenuBundle\EventListener\MenuListener
         arguments:
             - @service_container
         tags:
-            - { name: doctrine.event_subscriber, connection: default }
+            - { name: doctrine.orm.entity_listener, entity: %grossum_menu.menu.entity.class%, event: prePersist }
 
-    grossum_menu.event_listener.menu_item_subscriber:
-        class: Grossum\MenuBundle\EventListener\MenuItemSubscriber
+    grossum_menu.event_listener.menu_item_listener:
+        class: Grossum\MenuBundle\EventListener\MenuItemListener
         arguments:
             - @service_container
         tags:
-            - { name: doctrine.event_subscriber, connection: default }
+            - { name: doctrine.orm.entity_listener, entity: %grossum_menu.menu_item.entity.class%, event: prePersist }
+            - { name: doctrine.orm.entity_listener, entity: %grossum_menu.menu_item.entity.class%, event: preUpdate }
+            - { name: doctrine.orm.entity_listener, entity: %grossum_menu.menu_item.entity.class%, event: preRemove }
+            - { name: doctrine.orm.entity_listener, event: onFlush }
