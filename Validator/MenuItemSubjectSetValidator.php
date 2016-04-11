@@ -7,18 +7,19 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 use Grossum\MenuBundle\Entity\BaseMenuItem;
 
-class MenuItemSubjectSettedValidator extends ConstraintValidator
+class MenuItemSubjectSetValidator extends ConstraintValidator
 {
     /**
      * @param BaseMenuItem $menuItem
-     * @param Constraint $constraint
+     * @param MenuItemSubjectSet $constraint MenuItemSubjectSet is type of Constraint
      */
     public function validate($menuItem, Constraint $constraint)
     {
-        /* @var $menuItem BaseMenuItem */
-        /* @var $constraint MenuItemSubjectSetted */
+        $urlWasSet         = $menuItem->getUrl();
+        $entityClassWasSet = $menuItem->getEntityClass();
 
-        if (!($menuItem->getUrl() xor $menuItem->getEntityClass())) {
+        // must be set only the one
+        if (!($urlWasSet xor $entityClassWasSet)) {
             $this->context
                 ->buildViolation($constraint->message)
                 ->atPath('url')

@@ -93,7 +93,8 @@ class BaseMenuItemManager
             $menuItem
                 ->setParent($parentMenuItem)
                 ->setLft($treeData['left'])
-                ->setRgt($treeData['right']);
+                ->setRgt($treeData['right'])
+                ->setLvl($treeData['depth'] + 1);
         }
 
         return $this->getRepository()->verify();

@@ -43,13 +43,3 @@ services:
             - @service_container
         tags:
             - { name: doctrine.orm.entity_listener, entity: %grossum_menu.menu.entity.class%, event: prePersist }
-
-    grossum_menu.event_listener.menu_item_listener:
-        class: Grossum\MenuBundle\EventListener\MenuItemListener
-        arguments:
-            - @service_container
-        tags:
-            - { name: doctrine.orm.entity_listener, entity: %grossum_menu.menu_item.entity.class%, event: prePersist }
-            - { name: doctrine.orm.entity_listener, entity: %grossum_menu.menu_item.entity.class%, event: preUpdate }
-            - { name: doctrine.orm.entity_listener, entity: %grossum_menu.menu_item.entity.class%, event: preRemove }
-            - { name: doctrine.orm.entity_listener, event: onFlush }

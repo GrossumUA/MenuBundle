@@ -11,6 +11,7 @@ use Grossum\MenuBundle\Manager\MenuManager;
 class MenuEntityClassType extends AbstractType
 {
     const NAME = 'grossum_menu_entity_class';
+
     /**
      * @var MenuManager
      */
