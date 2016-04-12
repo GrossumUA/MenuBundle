@@ -56,7 +56,7 @@ class BaseMenuItemManager
      */
     public function createRootMenuItemForMenu(BaseMenu $menu)
     {
-        /* @var $rootMenuItem BaseMenuItem */
+        /** @var BaseMenuItem $rootMenuItem */
         $rootMenuItem = new $this->menuItemClass();
 
         // @todo: if site is multi language so add translations for other languages
@@ -85,7 +85,7 @@ class BaseMenuItemManager
                 continue;
             }
 
-            /* @var BaseMenuItem $menuItem */
+            /** @var BaseMenuItem $menuItem */
             $menuItem = $this->getRepository()->find($treeData['id']);
             $parentId = ($treeData['parent_id'] === BaseMenuItem::ROOT) ? $root->getId() : $treeData['parent_id'];
             $parentMenuItem = $this->getRepository()->find($parentId);

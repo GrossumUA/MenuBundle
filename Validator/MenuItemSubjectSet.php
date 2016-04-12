@@ -10,7 +10,10 @@ use Symfony\Component\Validator\Constraint;
  */
 class MenuItemSubjectSet extends Constraint
 {
-    public $message = 'In menu item must be set "url" or "entity class"';
+    /**
+     * @var string
+     */
+    public $message = 'Menu item should have url or selected entity only';
 
     /**
      * {@inheritdoc}

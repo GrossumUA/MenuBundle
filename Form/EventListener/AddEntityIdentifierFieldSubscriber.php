@@ -44,7 +44,7 @@ class AddEntityIdentifierFieldSubscriber implements EventSubscriberInterface
     {
         $form = $event->getForm();
 
-        /* @var $menuItem BaseMenuItem */
+        /** @var BaseMenuItem $menuItem */
         $menuItem = $event->getData();
 
         if (!$menuItem || !$menuItem->getEntityClass()) {
