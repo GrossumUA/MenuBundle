@@ -36,3 +36,13 @@ services:
             - @grossum_menu.menu.manager
         tags:
             - { name: form.type, alias: 'grossum_menu_entity_identifier'}
+
+    grossum_menu.provider.menu_provider:
+        class: %grossum_menu.provider.menu_provider%
+        arguments:
+            - @knp_menu.factory
+            - @grossum_menu.menu.entity.manager
+            - @grossum_menu.menu_item.entity.manager
+            - @grossum_menu.menu.manager
+        tags:
+            - { name: knp_menu.provider }
