@@ -45,17 +45,17 @@ abstract class BaseMenuItem
     protected $menu;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $lft;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $rgt;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $lvl;
 
@@ -81,7 +81,7 @@ abstract class BaseMenuItem
     }
 
     /**
-     * @return integer
+     * @return int
      */
     abstract public function getId();
 
@@ -230,7 +230,7 @@ abstract class BaseMenuItem
     }
 
     /**
-     * @param integer $lft
+     * @param int $lft
      *
      * @return $this
      */
@@ -242,7 +242,7 @@ abstract class BaseMenuItem
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getLft()
     {
@@ -250,7 +250,7 @@ abstract class BaseMenuItem
     }
 
     /**
-     * @param integer $rgt
+     * @param int $rgt
      *
      * @return $this
      */
@@ -262,7 +262,7 @@ abstract class BaseMenuItem
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getRgt()
     {
@@ -270,7 +270,7 @@ abstract class BaseMenuItem
     }
 
     /**
-     * @param integer $lvl
+     * @param int $lvl
      *
      * @return $this
      */
@@ -282,7 +282,7 @@ abstract class BaseMenuItem
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getLvl()
     {
