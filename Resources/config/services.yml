@@ -1,9 +1,18 @@
+parameters:
+    grossum_menu_tree_depth: 32
+
 services:
-    grossum_menu.menu.entity.manager:
-        class: %grossum_menu.menu.manager.class%
+    grossum_menu.entity_manager.menu.manager:
+        class: %grossum_menu.entity_manager.menu.class%
         arguments:
             - @grossum_core.entity_manager
             - %grossum_menu.menu.entity.class%
+
+    grossum_menu.entity.manager.menu_item.manager:
+        class: %grossum_menu.entity_manager.menu_item.class%
+        arguments:
+            - @grossum_core.entity_manager
+            - %grossum_menu.menu_item.entity.class%
 
     grossum_menu.menu.manager:
         class: %grossum_menu.menu.manager.class%
@@ -14,9 +23,26 @@ services:
         arguments:
             - @router
 
-#ONLY FOR TEST. REMOVE IT WHEN FINISH
-    grossum_menu.contact.menu_handler:
-        class: %grossum_menu.contact.menu_handler.class%
-        parent: grossum_menu.abstract.menu_handler
+    grossum_menu.form.type.menu_entity_class:
+        class: %grossum_menu.form.type.menu_entity_class.class%
+        arguments:
+            - @grossum_menu.menu.manager
         tags:
-            - { name: grossum_menu.menu_handler }
+            - { name: form.type, alias: 'grossum_menu_entity_class'}
+
+    grossum_menu.form.type.menu_entity_identifier:
+        class: %grossum_menu.form.type.menu_entity_identifier.class%
+        arguments:
+            - @grossum_menu.menu.manager
+        tags:
+            - { name: form.type, alias: 'grossum_menu_entity_identifier'}
+
+    grossum_menu.provider.menu_provider:
+        class: %grossum_menu.provider.menu_provider%
+        arguments:
+            - @knp_menu.factory
+            - @grossum_menu.entity_manager.menu.manager
+            - @grossum_menu.entity.manager.menu_item.manager
+            - @grossum_menu.menu.manager
+        tags:
+            - { name: knp_menu.provider }

@@ -23,24 +23,24 @@ abstract class BaseMenu
     protected $updatedAt;
 
     /**
-     * @var Collection
+     * @var Collection|BaseMenuItem[]
      */
     protected $menuItems;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
         $this->menuItems = new ArrayCollection();
     }
 
     /**
-     * Set name
-     *
+     * @return integer
+     */
+    abstract public function getId();
+
+    /**
      * @param string $name
      *
-     * @return BaseMenu
+     * @return $this
      */
     public function setName($name)
     {
@@ -50,8 +50,6 @@ abstract class BaseMenu
     }
 
     /**
-     * Get name
-     *
      * @return string
      */
     public function getName()
@@ -60,11 +58,9 @@ abstract class BaseMenu
     }
 
     /**
-     * Set createdAt
-     *
      * @param \DateTime $createdAt
      *
-     * @return BaseMenu
+     * @return $this
      */
     public function setCreatedAt($createdAt)
     {
@@ -74,8 +70,6 @@ abstract class BaseMenu
     }
 
     /**
-     * Get createdAt
-     *
      * @return \DateTime
      */
     public function getCreatedAt()
@@ -84,11 +78,9 @@ abstract class BaseMenu
     }
 
     /**
-     * Set updatedAt
-     *
      * @param \DateTime $updatedAt
      *
-     * @return BaseMenu
+     * @return $this
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -98,8 +90,6 @@ abstract class BaseMenu
     }
 
     /**
-     * Get updatedAt
-     *
      * @return \DateTime
      */
     public function getUpdatedAt()
@@ -108,31 +98,18 @@ abstract class BaseMenu
     }
 
     /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->getName() ?: 'New Menu';
-    }
-
-    /**
-     * Add menuItem
-     *
      * @param BaseMenuItem $menuItem
      *
      * @return $this
      */
     public function addMenuItem(BaseMenuItem $menuItem)
     {
-        $menuItem->setMenu($this);
         $this->menuItems[] = $menuItem;
 
         return $this;
     }
 
     /**
-     * Remove menuItem
-     *
      * @param BaseMenuItem $menuItem
      */
     public function removeMenuItem(BaseMenuItem $menuItem)
@@ -141,12 +118,18 @@ abstract class BaseMenu
     }
 
     /**
-     * Get menuItems
-     *
-     * @return Collection
+     * @return Collection|BaseMenuItem[]
      */
     public function getMenuItems()
     {
         return $this->menuItems;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName() ?: 'New Menu';
     }
 }

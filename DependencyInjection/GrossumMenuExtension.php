@@ -50,31 +50,32 @@ class GrossumMenuExtension extends Extension
     public function registerDoctrineMapping(array $config)
     {
         $collector = DoctrineCollector::getInstance();
-        $collector->addAssociation($config['class']['menu_item'], 'mapManyToOne', array(
+        $collector->addAssociation($config['class']['menu_item'], 'mapManyToOne', [
             'fieldName'     => 'menu',
             'targetEntity'  => $config['class']['menu'],
-            'cascade'       => array(
+            'cascade'       => [
                 'persist',
-            ),
+            ],
             'mappedBy'      => null,
             'inversedBy'    => 'menuItems',
-            'joinColumns'   => array(
-                array(
+            'joinColumns'   => [
+                [
                     'name'                 => 'menu_id',
                     'referencedColumnName' => 'id',
-                ),
-            ),
+                    'nullable'             => false
+                ],
+            ],
             'orphanRemoval' => false,
-        ));
+        ]);
 
-        $collector->addAssociation($config['class']['menu'], 'mapOneToMany', array(
+        $collector->addAssociation($config['class']['menu'], 'mapOneToMany', [
             'fieldName'     => 'menuItems',
             'targetEntity'  => $config['class']['menu_item'],
-            'cascade'       => array(
+            'cascade'       => [
                 'persist',
-            ),
+            ],
             'mappedBy'      => 'menu',
             'orphanRemoval' => true,
-        ));
+        ]);
     }
 }

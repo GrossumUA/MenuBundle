@@ -2,8 +2,13 @@
 
 namespace Grossum\MenuBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
 abstract class BaseMenuItem
 {
+    const ROOT = 'root';
+
     /**
      * @var string
      */
@@ -40,8 +45,47 @@ abstract class BaseMenuItem
     protected $menu;
 
     /**
-     * Set title
-     *
+     * @var int
+     */
+    protected $lft;
+
+    /**
+     * @var int
+     */
+    protected $rgt;
+
+    /**
+     * @var int
+     */
+    protected $lvl;
+
+    /**
+     * @var Collection|BaseMenuItem[]
+     */
+    protected $children;
+
+    /**
+     * @var BaseMenuItem
+     */
+    protected $parent;
+
+    /**
+     * @var BaseMenuItem
+     */
+    protected $root;
+
+    public function __construct()
+    {
+        $this->children = new ArrayCollection();
+        $this->url = '#';
+    }
+
+    /**
+     * @return int
+     */
+    abstract public function getId();
+
+    /**
      * @param string $title
      *
      * @return $this
@@ -54,8 +98,6 @@ abstract class BaseMenuItem
     }
 
     /**
-     * Get title
-     *
      * @return string
      */
     public function getTitle()
@@ -64,8 +106,6 @@ abstract class BaseMenuItem
     }
 
     /**
-     * Set url
-     *
      * @param string $url
      *
      * @return $this
@@ -78,8 +118,6 @@ abstract class BaseMenuItem
     }
 
     /**
-     * Get url
-     *
      * @return string
      */
     public function getUrl()
@@ -88,8 +126,6 @@ abstract class BaseMenuItem
     }
 
     /**
-     * Set entityClass
-     *
      * @param string $entityClass
      *
      * @return $this
@@ -102,8 +138,6 @@ abstract class BaseMenuItem
     }
 
     /**
-     * Get entityClass
-     *
      * @return string
      */
     public function getEntityClass()
@@ -112,8 +146,6 @@ abstract class BaseMenuItem
     }
 
     /**
-     * Set entityIdentifier
-     *
      * @param string $entityIdentifier
      *
      * @return $this
@@ -126,8 +158,6 @@ abstract class BaseMenuItem
     }
 
     /**
-     * Get entityIdentifier
-     *
      * @return string
      */
     public function getEntityIdentifier()
@@ -136,8 +166,6 @@ abstract class BaseMenuItem
     }
 
     /**
-     * Set createdAt
-     *
      * @param \DateTime $createdAt
      *
      * @return $this
@@ -150,8 +178,6 @@ abstract class BaseMenuItem
     }
 
     /**
-     * Get createdAt
-     *
      * @return \DateTime
      */
     public function getCreatedAt()
@@ -160,8 +186,6 @@ abstract class BaseMenuItem
     }
 
     /**
-     * Set updatedAt
-     *
      * @param \DateTime $updatedAt
      *
      * @return $this
@@ -174,8 +198,6 @@ abstract class BaseMenuItem
     }
 
     /**
-     * Get updatedAt
-     *
      * @return \DateTime
      */
     public function getUpdatedAt()
@@ -184,9 +206,8 @@ abstract class BaseMenuItem
     }
 
     /**
-     * Set menu
-     *
      * @param BaseMenu $menu
+     *
      * @return $this
      */
     public function setMenu(BaseMenu $menu)
@@ -197,13 +218,139 @@ abstract class BaseMenuItem
     }
 
     /**
-     * Get menu
-     *
      * @return BaseMenu
      */
     public function getMenu()
     {
         return $this->menu;
+    }
+
+    /**
+     * @param int $lft
+     *
+     * @return $this
+     */
+    public function setLft($lft)
+    {
+        $this->lft = $lft;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLft()
+    {
+        return $this->lft;
+    }
+
+    /**
+     * @param int $rgt
+     *
+     * @return $this
+     */
+    public function setRgt($rgt)
+    {
+        $this->rgt = $rgt;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRgt()
+    {
+        return $this->rgt;
+    }
+
+    /**
+     * @param int $lvl
+     *
+     * @return $this
+     */
+    public function setLvl($lvl)
+    {
+        $this->lvl = $lvl;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLvl()
+    {
+        return $this->lvl;
+    }
+
+    /**
+     * @param BaseMenuItem $child
+     *
+     * @return $this
+     */
+    public function addChild(BaseMenuItem $child)
+    {
+        $this->children[] = $child;
+
+        return $this;
+    }
+
+    /**
+     * @param BaseMenuItem $child
+     */
+    public function removeChild(BaseMenuItem $child)
+    {
+        $this->children->removeElement($child);
+    }
+
+    /**
+     * @return Collection|BaseMenuItem[]
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
+     * @param BaseMenuItem $root
+     *
+     * @return $this
+     */
+    public function setRoot(BaseMenuItem $root = null)
+    {
+        $this->root = $root;
+
+        return $this;
+    }
+
+    /**
+     * @return BaseMenuItem
+     */
+    public function getRoot()
+    {
+        return $this->root;
+    }
+
+    /**
+     * @param BaseMenuItem $parent
+     *
+     * @return $this
+     */
+    public function setParent(BaseMenuItem $parent = null)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * @return BaseMenuItem
+     */
+    public function getParent()
+    {
+        return $this->parent;
     }
 
     /**

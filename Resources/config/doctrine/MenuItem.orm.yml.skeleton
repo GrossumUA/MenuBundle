@@ -9,3 +9,26 @@ Application\Grossum\MenuBundle\Entity\MenuItem:
             id: true
             generator:
                 strategy: AUTO
+    manyToOne:
+        root:
+            targetEntity: Application\Grossum\MenuBundle\Entity\MenuItem
+            nullable: true
+            joinColumn:
+                referencedColumnName: id
+                onDelete: CASCADE
+            gedmo:
+                - treeRoot
+        parent:
+            targetEntity: Application\Grossum\MenuBundle\Entity\MenuItem
+            inversedBy: children
+            joinColumn:
+                referencedColumnName: id
+                onDelete: CASCADE
+            gedmo:
+                - treeParent
+    oneToMany:
+        children:
+            targetEntity: Application\Grossum\MenuBundle\Entity\MenuItem
+            mappedBy: parent
+            orderBy:
+                lft: ASC
