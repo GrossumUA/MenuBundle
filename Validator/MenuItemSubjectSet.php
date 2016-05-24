@@ -8,9 +8,12 @@ use Symfony\Component\Validator\Constraint;
  * @Annotation
  * @Target({"CLASS"})
  */
-class MenuItemSubjectSetted extends Constraint
+class MenuItemSubjectSet extends Constraint
 {
-    public $message = 'The menu item "subject" must be the one';
+    /**
+     * @var string
+     */
+    public $message = 'Menu item should have url or selected entity only';
 
     /**
      * {@inheritdoc}

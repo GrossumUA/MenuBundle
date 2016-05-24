@@ -23,11 +23,15 @@ class MenuItemAdminController extends Controller
     {
         $menuId = $request->get($this->admin->getParent()->getIdParameter());
 
-        /* @var $menu BaseMenu */
+        /** @var BaseMenu $menu */
         $menu = $this
             ->get('grossum_menu.entity_manager.menu.manager')
             ->getRepository()
             ->find($menuId);
+
+        if (!$menu) {
+            throw $this->createNotFoundException(sprintf('Menu with id "%s" not found', $menuId));
+        }
 
         $root = $this
             ->get('grossum_menu.entity.manager.menu_item.manager')
@@ -57,7 +61,7 @@ class MenuItemAdminController extends Controller
 
         $menuId = $request->get($this->admin->getParent()->getIdParameter());
 
-        /* @var $menu BaseMenu */
+        /** @var BaseMenu $menu */
         $menu = $this
             ->get('grossum_menu.entity_manager.menu.manager')
             ->getRepository()
@@ -106,8 +110,8 @@ class MenuItemAdminController extends Controller
 
         $twig = $this->get('twig');
 
-        /* @var $extension FormExtension */
-        $extension =$twig->getExtension('form');
+        /** @var FormExtension $extension */
+        $extension = $twig->getExtension('form');
         $extension->initRuntime($twig);
 
         $elementView = $this->get('sonata.admin.helper')->getChildFormView($form->createView(), $elementId);

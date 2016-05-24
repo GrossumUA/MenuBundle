@@ -29,7 +29,7 @@ class MenuItemAdmin extends Admin
     /**
      * @var MenuManager
      */
-    protected $menuMaster;
+    protected $menuManager;
 
     /**
      * {@inheritdoc}
@@ -92,7 +92,7 @@ class MenuItemAdmin extends Admin
 
         $formMapper
             ->getFormBuilder()
-            ->addEventSubscriber(new AddEntityIdentifierFieldSubscriber($this->menuMaster));
+            ->addEventSubscriber(new AddEntityIdentifierFieldSubscriber($this->menuManager));
     }
 
     /**
@@ -120,10 +120,10 @@ class MenuItemAdmin extends Admin
     }
 
     /**
-     * @param MenuManager $menuMaster
+     * @param MenuManager $menuManager
      */
-    public function setMenuMaster(MenuManager $menuMaster)
+    public function setMenuManager(MenuManager $menuManager)
     {
-        $this->menuMaster = $menuMaster;
+        $this->menuManager = $menuManager;
     }
 }

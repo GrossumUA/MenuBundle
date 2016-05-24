@@ -46,3 +46,10 @@ services:
             - @grossum_menu.menu.manager
         tags:
             - { name: knp_menu.provider }
+
+    grossum_menu.event_listener.menu_listener:
+        class: Grossum\MenuBundle\EventListener\MenuListener
+        arguments:
+            - @service_container
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: %grossum_menu.menu.entity.class%, event: prePersist }

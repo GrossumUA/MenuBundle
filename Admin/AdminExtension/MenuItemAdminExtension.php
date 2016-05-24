@@ -11,23 +11,9 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 
 use Grossum\MenuBundle\Entity\BaseMenuItem;
-use Grossum\MenuBundle\Entity\EntityManager\BaseMenuItemManager;
 
 class MenuItemAdminExtension extends AdminExtension
 {
-    /**
-     * @var BaseMenuItemManager
-     */
-    protected $menuItemManager;
-
-    /**
-     * @param BaseMenuItemManager $menuItemManager
-     */
-    public function __construct(BaseMenuItemManager $menuItemManager)
-    {
-        $this->menuItemManager = $menuItemManager;
-    }
-
     /**
      * {@inheritdoc}
      * @param QueryBuilder $query
@@ -35,22 +21,6 @@ class MenuItemAdminExtension extends AdminExtension
     public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list')
     {
         $query->andWhere($query->expr()->isNotNull($query->getRootAliases()[0] . '.parent'));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function preUpdate(AdminInterface $admin, $object)
-    {
-        $this->recoverTree();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prePersist(AdminInterface $admin, $object)
-    {
-        $this->recoverTree();
     }
 
     /**
@@ -63,18 +33,5 @@ class MenuItemAdminExtension extends AdminExtension
         if ($object->getParent() === null) {
             throw new AccessDeniedException();
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function preRemove(AdminInterface $admin, $object)
-    {
-        $this->recoverTree();
-    }
-
-    protected function recoverTree()
-    {
-        $this->menuItemManager->getRepository()->recover();
     }
 }
