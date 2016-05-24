@@ -34,7 +34,7 @@ class MenuItemAdminExtension extends AdminExtension
      */
     public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list')
     {
-        $query->andWhere($query->getRootAliases()[0] . '.parent IS NOT NULL');
+        $query->andWhere($query->expr()->isNotNull($query->getRootAliases()[0] . '.parent'));
     }
 
     /**
