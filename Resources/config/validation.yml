@@ -1,0 +1,6 @@
+Grossum\MenuBundle\Entity\BaseMenuItem:
+    constraints:
+        - Grossum\MenuBundle\Validator\MenuItemSubjectSet: ~
+    properties:
+        title:
+            - NotBlank: ~

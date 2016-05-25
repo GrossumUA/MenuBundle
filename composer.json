@@ -1,0 +1,37 @@
+{
+    "name" : "grossum/menu-bundle",
+    "description" : "Menu bundle for Grossum project",
+    "type" : "symfony-bundle",
+    "authors" : [{
+        "name" : "Denis Malavsky",
+        "email" : "dmalavsky@grossum.com"
+    }],
+    "keywords" : [
+        "Menu bundle"
+    ],
+    "license" : [
+        "MIT"
+    ],
+    "require": {
+        "php": ">=5.4",
+        "symfony/framework-bundle": "~2.1",
+        "sonata-project/admin-bundle": "~2.2",
+        "gedmo/doctrine-extensions": "~2.4"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "2.*",
+        "phpmd/phpmd" : "@stable",
+        "sebastian/phpcpd": "*"
+    },
+    "autoload" : {
+        "psr-0" : {
+            "Grossum\\MenuBundle" : ""
+        }
+    },
+    "target-dir" : "Grossum/MenuBundle",
+    "extra" : {
+    "branch-alias" : {
+            "dev-master" : "0.1-dev"
+        }
+    }
+}

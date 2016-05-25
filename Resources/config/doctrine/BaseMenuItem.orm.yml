@@ -1,0 +1,48 @@
+Grossum\MenuBundle\Entity\BaseMenuItem:
+    type: mappedSuperclass
+    table: menu_item
+    gedmo:
+        tree:
+            type: nested
+    fields:
+        title:
+            type: string
+            length: 255
+        url:
+            type: string
+            length: 255
+            nullable: true
+        entityClass:
+            type: string
+            length: 255
+            column: entity_class
+            nullable: true
+        entityIdentifier:
+            type: string
+            length: 255
+            column: entity_identifier
+            nullable: true
+        lft:
+            type: integer
+            gedmo:
+                - treeLeft
+        rgt:
+            type: integer
+            gedmo:
+                - treeRight
+        lvl:
+            type: integer
+            gedmo:
+                - treeLevel
+        createdAt:
+            type: datetime
+            column: created_at
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            column: updated_at
+            gedmo:
+                timestampable:
+                    on: update

@@ -1,0 +1,15 @@
+parameters:
+    grossum_menu.menu.admin.class:                       Grossum\MenuBundle\Admin\MenuAdmin
+    grossum_menu.menu_item.admin.class:                  Grossum\MenuBundle\Admin\MenuItemAdmin
+
+    grossum_menu.entity_manager.menu.class:              Grossum\MenuBundle\Entity\EntityManager\BaseMenuManager
+    grossum_menu.entity_manager.menu_item.class:         Grossum\MenuBundle\Entity\EntityManager\BaseMenuItemManager
+
+    grossum_menu.menu.manager.class:                     Grossum\MenuBundle\Manager\MenuManager
+
+    grossum_menu.abstract.menu_handler.class:            Grossum\MenuBundle\Handler\AbstractMenuHandler
+
+    grossum_menu.form.type.menu_entity_class.class:      Grossum\MenuBundle\Form\Type\MenuEntityClassType
+    grossum_menu.form.type.menu_entity_identifier.class: Grossum\MenuBundle\Form\Type\MenuEntityIdentifierType
+
+    grossum_menu.provider.menu_provider:                 Grossum\MenuBundle\Provider\MenuProvider
