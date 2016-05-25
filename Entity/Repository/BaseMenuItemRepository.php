@@ -42,8 +42,8 @@ abstract class BaseMenuItemRepository extends NestedTreeRepository
 
         if ($lft && $rgt) {
             $qb->andWhere($qb->expr()->orX(
-                $qb->expr()->lt('menu_item.lft', $menuItem->getLft()),
-                $qb->expr()->gt('menu_item.rgt', $menuItem->getRgt())
+                $qb->expr()->lt('menu_item.lft', $lft),
+                $qb->expr()->gt('menu_item.rgt', $rgt)
             ));
         }
 

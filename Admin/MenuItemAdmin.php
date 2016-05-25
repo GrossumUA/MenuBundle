@@ -102,7 +102,7 @@ class MenuItemAdmin extends Admin
     {
         $query = parent::createQuery($context);
 
-        /* @var $query QueryBuilder */
+        /** @var $query QueryBuilder */
         $query->andWhere($query->expr()->isNotNull($query->getRootAliases()[0] . '.parent'));
 
         return $query;
