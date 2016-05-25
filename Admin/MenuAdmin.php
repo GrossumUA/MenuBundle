@@ -43,12 +43,7 @@ class MenuAdmin extends Admin
         $menu->addChild(
             $this->trans('grossum_menu.admin.side_menu.link_edit_page'),
             [
-                'uri' => $this->generateUrl(
-                    'edit',
-                    [
-                        'id' => $menuId
-                    ]
-                )
+                'uri' => $this->generateUrl('edit', ['id' => $menuId])
             ]
         );
 

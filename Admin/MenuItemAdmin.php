@@ -3,12 +3,16 @@
 namespace Grossum\MenuBundle\Admin;
 
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
+use Doctrine\ORM\QueryBuilder;
 
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 
+use Grossum\MenuBundle\Entity\BaseMenuItem;
 use Grossum\MenuBundle\Entity\EntityManager\BaseMenuItemManager;
 use Grossum\MenuBundle\Form\Type\MenuEntityClassType;
 use Grossum\MenuBundle\Form\EventListener\AddEntityIdentifierFieldSubscriber;
@@ -51,44 +55,28 @@ class MenuItemAdmin extends Admin
 
         $formMapper
             ->add('title', null, ['label' => 'grossum_menu.admin.menu_item.title'])
-            ->add(
-                'url',
-                null,
-                [
-                    'required' => false,
-                    'label'    => 'grossum_menu.admin.menu_item.url'
-                ]
-            )
-            ->add(
-                'parent',
-                null,
-                [
-                    'required' => true,
-                    'label'    => 'grossum_menu.admin.menu_item.parent',
-                    'choices'  => $this
-                        ->menuItemManager
-                        ->getRepository()
-                        ->findAvailableMenuItems($menuId, $this->getSubject())
-                ]
-            )
-            ->add(
-                'entityClass',
-                MenuEntityClassType::class,
-                [
-                    'required'    => false,
-                    'label'       => 'grossum_menu.admin.menu_item.entity_class',
-                    'placeholder' => 'grossum_menu.admin.menu_item.entity_class_placeholder',
-                ]
-            )
-            ->add(
-                'entityIdentifier',
-                ChoiceType::class,
-                [
-                    'required'    => false,
-                    'label'       => 'grossum_menu.admin.menu_item.entity_identifier',
-                    'placeholder' => 'grossum_menu.admin.menu_item.placeholder',
-                ]
-            );
+            ->add('url', null, [
+                'required' => false,
+                'label'    => 'grossum_menu.admin.menu_item.url'
+            ])
+            ->add('parent', null, [
+                'required' => true,
+                'label'    => 'grossum_menu.admin.menu_item.parent',
+                'choices'  => $this
+                    ->menuItemManager
+                    ->getRepository()
+                    ->findAvailableMenuItems($menuId, $this->getSubject())
+            ])
+            ->add('entityClass', MenuEntityClassType::class, [
+                'required'    => false,
+                'label'       => 'grossum_menu.admin.menu_item.entity_class',
+                'placeholder' => 'grossum_menu.admin.menu_item.entity_class_placeholder',
+            ])
+            ->add('entityIdentifier', ChoiceType::class, [
+                'required'    => false,
+                'label'       => 'grossum_menu.admin.menu_item.entity_identifier',
+                'placeholder' => 'grossum_menu.admin.menu_item.placeholder',
+            ]);
 
         $formMapper
             ->getFormBuilder()
@@ -102,13 +90,35 @@ class MenuItemAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('title', null, ['label' => 'grossum_menu.admin.menu_item.title'])
-            ->add(
-                'parent.title',
-                null,
-                [
-                    'label' => 'grossum_menu.admin.menu_item.parent',
-                ]
-            );
+            ->add('parent.title', null, [
+                'label' => 'grossum_menu.admin.menu_item.parent',
+            ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createQuery($context = 'list')
+    {
+        $query = parent::createQuery($context);
+
+        /** @var $query QueryBuilder */
+        $query->andWhere($query->expr()->isNotNull($query->getRootAliases()[0] . '.parent'));
+
+        return $query;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getObject($id)
+    {
+        /** @var BaseMenuItem $object */
+        $object = parent::getObject($id);
+
+        if ($object->getParent() === null) {
+            throw new AccessDeniedException();
+        }
     }
 
     /**
