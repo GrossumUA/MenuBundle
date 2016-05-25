@@ -119,6 +119,8 @@ class MenuItemAdmin extends Admin
         if ($object->getParent() === null) {
             throw new AccessDeniedException();
         }
+        
+        return $object;
     }
 
     /**
