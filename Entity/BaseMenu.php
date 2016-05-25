@@ -33,7 +33,7 @@ abstract class BaseMenu
     }
 
     /**
-     * @return integer
+     * @return int
      */
     abstract public function getId();
 

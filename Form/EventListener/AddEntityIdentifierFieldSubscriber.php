@@ -62,7 +62,7 @@ class AddEntityIdentifierFieldSubscriber implements EventSubscriberInterface
         $form = $event->getForm();
         $data = $event->getData();
 
-        if (!isset($data['entityClass']) || !$data['entityClass']) {
+        if (empty($data['entityClass'])) {
             return;
         }
 

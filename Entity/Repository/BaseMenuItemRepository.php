@@ -13,36 +13,13 @@ abstract class BaseMenuItemRepository extends NestedTreeRepository
 {
     /**
      * @param int $menuId
-     * @param BaseMenuItem[] $except
-     * @return BaseMenuItem[]
-     */
-    public function findMenuItemsExcept($menuId, array $except)
-    {
-        $qb = $this->createQueryBuilder('menu_item');
-        $qb
-            ->where(
-                $qb->expr()->eq('menu_item.menu', ':menu')
-            )
-            ->andWhere(
-                $qb->expr()->notIn('menu_item.id', ':except')
-            )
-            ->setParameter('menu', $menuId)
-            ->setParameter('except', $except);
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * @param int $menuId
      * @return BaseMenuItem[]
      */
     public function findMenuItems($menuId)
     {
         $qb = $this->createQueryBuilder('menu_item');
         $qb
-            ->where(
-                $qb->expr()->eq('menu_item.menu', ':menu')
-            )
+            ->where($qb->expr()->eq('menu_item.menu', ':menu'))
             ->setParameter('menu', $menuId);
 
         return $qb->getQuery()->getResult();
@@ -50,19 +27,27 @@ abstract class BaseMenuItemRepository extends NestedTreeRepository
 
     /**
      * @param int $menuId
-     * @param BaseMenuItem $entity
+     * @param BaseMenuItem $menuItem
      * @return BaseMenuItem[]
      */
-    public function findAvailableMenuItems($menuId, $entity)
+    public function findAvailableMenuItems($menuId, BaseMenuItem $menuItem)
     {
-        if (!$entity->getId()) {
-            return $this->findMenuItems($menuId);
+        $qb = $this->createQueryBuilder('menu_item');
+        $qb
+            ->where($qb->expr()->eq('menu_item.menu', ':menu'))
+            ->setParameter('menu', $menuId);
+
+        $lft = $menuItem->getLft();
+        $rgt = $menuItem->getRgt();
+
+        if ($lft && $rgt) {
+            $qb->andWhere($qb->expr()->orX(
+                $qb->expr()->lt('menu_item.lft', $menuItem->getLft()),
+                $qb->expr()->gt('menu_item.rgt', $menuItem->getRgt())
+            ));
         }
 
-        $exceptThis = $this->getChildren($entity);
-        $exceptThis[] = $entity;
-
-        return $this->findMenuItemsExcept($menuId, $exceptThis);
+        return $qb->getQuery()->getResult();
     }
 
     /**
@@ -74,12 +59,8 @@ abstract class BaseMenuItemRepository extends NestedTreeRepository
     {
         $qb = $this->createQueryBuilder('menu_item');
         $qb
-            ->where(
-                $qb->expr()->isNull('menu_item.parent')
-            )
-            ->andWhere(
-                $qb->expr()->eq('menu_item.menu', ':menu')
-            )
+            ->where($qb->expr()->isNull('menu_item.parent'))
+            ->andWhere($qb->expr()->eq('menu_item.menu', ':menu'))
             ->setParameter('menu', $menu);
 
         return $qb->getQuery()->getOneOrNullResult();
