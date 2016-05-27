@@ -109,7 +109,7 @@ class MenuProvider implements MenuProviderInterface
                 $uri = $this
                     ->menuMaster
                     ->getMenuHandler($node['entityClass'])
-                    ->generateEntityUrl($node['entityIdentifier']);
+                    ->getUrl($node['entityIdentifier']);
             }
 
             $child = $parent->addChild($node['title'], ['uri' => $uri]);
