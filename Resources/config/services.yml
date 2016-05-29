@@ -20,8 +20,6 @@ services:
     grossum_menu.abstract.menu_handler:
         class: %grossum_menu.abstract.menu_handler.class%
         abstract: true
-        arguments:
-            - @router
 
     grossum_menu.form.type.menu_entity_class:
         class: %grossum_menu.form.type.menu_entity_class.class%

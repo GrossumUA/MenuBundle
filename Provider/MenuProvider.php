@@ -104,15 +104,15 @@ class MenuProvider implements MenuProviderInterface
     {
         foreach ($tree as $node) {
             if (null !== $node['url']) {
-                $uri = $node['url'];
+                $urlParameters = ['uri' => $node['url']];
             } else {
-                $uri = $this
+                $urlParameters = $this
                     ->menuMaster
                     ->getMenuHandler($node['entityClass'])
-                    ->getUrl($node['entityIdentifier']);
+                    ->getUrlParameters($node['entityIdentifier']);
             }
 
-            $child = $parent->addChild($node['title'], ['uri' => $uri]);
+            $child = $parent->addChild($node['title'], $urlParameters);
 
             if (count($node[$childrenIndex])) {
                 $this->addChildrenToMenuItem($child, $node[$childrenIndex], $childrenIndex);

@@ -5,27 +5,27 @@ namespace Grossum\MenuBundle\Handler;
 interface MenuHandlerInterface
 {
     /**
-     * Generate url for list page
+     * Get url parameters for list page
      *
      * @return string
      */
-    public function generateListUrl();
+    public function getListUrlParameters();
 
     /**
-     * Generate url for entity using identifier
+     * Get url parameters for entity page
      *
      * @param string $identifier
      * @return string
      */
-    public function generateEntityUrl($identifier);
+    public function getEntityUrlParameters($identifier);
 
     /**
-     * Get Url
+     * Get url parameters
      *
      * @param null|string $identifier
      * @return string
      */
-    public function getUrl($identifier = null);
+    public function getUrlParameters($identifier = null);
 
     /**
      * Get entity class (short form) for this handler, which will be a key in handlers store
