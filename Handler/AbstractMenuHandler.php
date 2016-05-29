@@ -7,27 +7,14 @@ use Symfony\Bundle\FrameworkBundle\Routing\Router;
 abstract class AbstractMenuHandler implements MenuHandlerInterface
 {
     /**
-     * @var Router
-     */
-    protected $router;
-
-    /**
-     * @param Router $router
-     */
-    public function __construct(Router $router)
-    {
-        $this->router = $router;
-    }
-
-    /**
      * {@inheritdoc}
      */
-    public function getUrl($identifier = null)
+    public function getUrlParameters($identifier = null)
     {
         if ($identifier === null) {
-            return $this->generateListUrl();
+            return $this->getListUrlParameters();
         }
 
-        return $this->generateEntityUrl($identifier);
+        return $this->getEntityUrlParameters($identifier);
     }
 }
